@@ -13,3 +13,8 @@ p {
 #collection-timeline {
     width: 90%
 }
+
+.long-output {
+    overflow-y: auto;
+    height: 200px;
+}
