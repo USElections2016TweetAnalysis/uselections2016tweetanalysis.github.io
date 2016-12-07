@@ -123,17 +123,29 @@
                         <p>Now that we have our graph we can have a look at the degree distributions (e.g try to indentify if the degree distributions follow
                         some kind of function):  </p>
                         <a href="#">
-                           <img class="indegreedi" src="img/post-sample-image.jpg" alt="">
+                           <img class="indegree" src="img/indegree.jpg" alt="">
                         </a>        
-                        <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+                        <span class="caption text-muted">Figure 1 - In degree distribution.</span>
+                        <a href="#">
+                           <img class="outdegree" src="img/outdegree.jpg" alt="">
+                        </a>        
+                        <span class="caption text-muted">Figure 2 - Out degree distribution.</span>
 
-                                            ICI degré in - tout expliquer puis comparer au degré out
                         <p>In Figure 1 we can see that the most common in degree is 2, with more than 50k occurences, but after 6 in degree it seems we have no more nodes. However the out degree distribution is way broader. very few users have the same out degree but it goes from 0 to roughly 5000.</p>
+                         <a href="#">
+                           <img class="logplot" src="img/logplot.jpg" alt="">
+                        </a>        
+                        <span class="caption text-muted">Figure 3 - Plot of distributions on a log-scale.</span>
+
                         <p>The in degree distributions seem to approach a power-law as we can see the long tail (Figure 3) at the begining where the number of nodes with low degrees is really high and then it decreases as a power-law (with a few fluctuations that mean we have a few high influential individuals that have a lot of followers).</p>
-                        <p>We can see that the in-degrees and out-degrees do not follow the same curve. This means that we can't expect to have as many connections coming in than coming out. And this interpretation makes sense as our network was build from a social media platform : we tend to follow more people than we have followers. The red curve in Figure 5 confirms our thoughts about the in degree distribution, it follows a power law. On the other hand, the blue curve (and the out degree distributions in general) is pretty chaotic, we can't tell if it follows any particular distribution.</p>
+                        <p>We can see that the in-degrees and out-degrees do not follow the same curve. This means that we can't expect to have as many connections coming in than coming out. And this interpretation makes sense as our network was build from a social media platform : we tend to follow more people than we have followers. On the other hand, the blue curve (and the out degree distributions in general) is pretty chaotic, we can't tell if it follows any particular distribution.</p>
 
                         <P>The graph is way too big to be drawn, so we decide to make a smaller graph. The idea is to keep the node with a degree greater than 3 only. We have a lot of isolated accounts that are quite useless in this centrality analysis. The new graph had now 2785 nodes and and  12228 edges.</P>                       
-                                         ISERT NOETWORK (essayer de le rendre plus beau)
+                        <a href="#">
+                           <img class="network" src="img/graphfin.jpg" alt="">
+                        </a>        
+                        <span class="caption text-muted">Reduced graph of users and followers</span>
+
                         <p>As we were exepecting, it seems like we have a few central accounts and thousands of smaller ones gravitating aroung them. To learn more about these central accounts we will now go through some centrality measures. We perform these algorithms on the reduced network as these measures are very costly.
                         Betweeness centrality measures how central a node is. Users with a high betweenness centrality may have a good followers/following ratio. We will look into these accounts later on.</p>
                         <p>Betweeness : The 5 most central accounts are :</p>
@@ -177,8 +189,14 @@
                         <p>To perform community detection we'll use the Louvain algorithm. The inspiration for this method of community detection is the optimization of Modularity as the algorithm progresses. Modularity is one measure between -1 and 1 of the structure of networks. It was designed to measure the strength of division of a network into modules (also called groups, clusters or communities). 
                         Networks with high modularity have dense connections between the nodes within modules but sparse connections between nodes in different modules. (Wikipédia)</p>
                         <p> We got a louvain modularity of 0.4, we can say this modularity is pretty high, which means we have good partitions in our network.</p>
-                        
-                                    Plot les deux graphs de communautés
+                        <a href="#">
+                           <img class="Communities" src="img/graphparti.jpg" alt="">
+                        </a>        
+                        <span class="caption text-muted">Communities in the network</span>
+                        <a href="#">
+                           <img class="network" src="img/smallpart.jpg" alt="">
+                        </a>        
+                        <span class="caption text-muted">Reduced communities in the network</span>
                         <p>We have 7 communities and we can see once more that one group is completely disconnected from the others. That is probably due to the first graph reduction (from 64k nodes to 2k nodes). This accounts had a lot of followers but they weren't popular so they've been removed. Now we have this isolated community while the others are connected. Let's dig into these communities.
                         Alright, we have a lot of informations to processe here, so we'll work community by community. Next to account's name we provide the Twitter descriptions and/or a general description.</p>
                         <h5>Community 0</h5>
@@ -226,7 +244,7 @@
                             <li>Sunshine420too : Joined to be aboard the Trump</li>
                             <li>FoxNews : America&rsquo;s Strongest Primetime Lineup Anywhere! Follow America's #1 cable news network, delivering you breaking news, insightful analysis, and must-see</li>
                         </ul>
-                        <h5>Conclusion :</5>
+                        <h5>Conclusion :</h5>
                         <p>This community is cleary made of Trump supporters and on a larger scale, republicans. We can see a lot of FOX News TV host, a TV channel which strongly supported Trump during the campain (and still does). We also have different personnality from Trump familly, board, government... When looking at the top accounts by out degree we come accross strongly patriotic users (a lot of Star Spangled Banners and bald eagles on the pages) and Trump supporters. Two things to notice however : Trump isn't in the top account, which is a odd, and we have at least one "troll" account (Trevor90666770) and we may have some more that would probably biase the sentiment</p>
                         <h5>Community 2</h5>
                         <p>The accounts by in degree</p>
