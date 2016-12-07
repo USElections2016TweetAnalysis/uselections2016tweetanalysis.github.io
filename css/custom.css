@@ -5,3 +5,11 @@
 .demo-blue {
 	color: rgb(0,157,246);
 }
+
+p {
+    font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#collection-timeline {
+    width: 90%
+}
