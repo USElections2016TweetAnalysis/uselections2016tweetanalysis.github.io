@@ -123,17 +123,17 @@
                         <p>Now that we have our graph we can have a look at the degree distributions (e.g try to indentify if the degree distributions follow
                         some kind of function):  </p>
                         <a href="#">
-                           <img class="indegree" src="img/indegree.jpg" alt="">
+                           <img class="indegree" src="img/indegree.jpg" alt="" align="middle">
                         </a>        
                         <span class="caption text-muted">Figure 1 - In degree distribution.</span>
                         <a href="#">
-                           <img class="outdegree" src="img/outdegree.jpg" alt="">
+                           <img class="outdegree" src="img/outdegree.jpg" alt="" align="middle">
                         </a>        
                         <span class="caption text-muted">Figure 2 - Out degree distribution.</span>
 
                         <p>In Figure 1 we can see that the most common in degree is 2, with more than 50k occurences, but after 6 in degree it seems we have no more nodes. However the out degree distribution is way broader. very few users have the same out degree but it goes from 0 to roughly 5000.</p>
                          <a href="#">
-                           <img class="logplot" src="img/logplot.jpg" alt="">
+                           <img class="logplot" src="img/logplot.jpg" alt="" align="middle">
                         </a>        
                         <span class="caption text-muted">Figure 3 - Plot of distributions on a log-scale.</span>
 
@@ -142,7 +142,7 @@
 
                         <P>The graph is way too big to be drawn, so we decide to make a smaller graph. The idea is to keep the node with a degree greater than 3 only. We have a lot of isolated accounts that are quite useless in this centrality analysis. The new graph had now 2785 nodes and and  12228 edges.</P>                       
                         <a href="#">
-                           <img class="network" src="img/graphfin.jpg" style="width: 50%; height: 50%">
+                           <img class="network" src="img/graphfin.jpg" align="middle" style="width: 50%; height: 50%">
                         </a>        
                         <span class="caption text-muted">Reduced graph of users and followers</span>
 
@@ -190,11 +190,11 @@
                         Networks with high modularity have dense connections between the nodes within modules but sparse connections between nodes in different modules. (Wikipédia)</p>
                         <p> We got a louvain modularity of 0.4, we can say this modularity is pretty high, which means we have good partitions in our network.</p>
                         <a href="#">
-                           <img class="Communities" src="img/graphparti.jpg" alt="">
+                           <img class="Communities" src="img/graphparti.jpg" alt="" align="middle" style="width: 50%; height: 50%">
                         </a>        
                         <span class="caption text-muted">Communities in the network</span>
                         <a href="#">
-                           <img class="network" src="img/smallpart.jpg" alt="">
+                           <img class="network" src="img/smallpart.jpg" alt="" align="middle" style="width: 50%; height: 50%">
                         </a>        
                         <span class="caption text-muted">Reduced communities in the network</span>
                         <p>We have 7 communities and we can see once more that one group is completely disconnected from the others. That is probably due to the first graph reduction (from 64k nodes to 2k nodes). This accounts had a lot of followers but they weren't popular so they've been removed. Now we have this isolated community while the others are connected. Let's dig into these communities.
