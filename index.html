@@ -513,23 +513,42 @@
                     </h3>
 
                     <p>Suprisingly, everyone felt a little meh. Sentiment analysis takes a look at the words in the tweet and give it a happiness score. The expected results for this election? Negative. The results? Neutral. Below are some statistics from the analysis.</p>
+                    
+                    <ul>
+                        <li><p>The average sentiment of tweet sentiment is   5.57</p></li>
+                        <li><p>The stanard deviation of tweet sentiment is   0.45</p></li>
+                        <li><p>Percentage of tweets that have a sentiment    86.68%</p></li>
+                        <li><p>Percentage of words that have a sentiment     23.92%</p></li>
+                        <li><p>The happiest tweet is                         7.53</p></li>
+                        <li><p>Happiest tweet text: @realDonaldTrump Congratulations For Great victory All Indian with you #electionday</p></li>
+                        <li><p>The saddest tweet is                          2.62</p></li>
+                        <li><p>Saddest tweet text: Is this the End of Terrorism ( #Elections2016 ) and Corruption? ( #ModiFightsCorruption )</p></li>
+                        
+                    </ul>
+                    
 
-                    <p>The average sentiment of tweet sentiment is   5.57</p>
-                    <p>The stanard deviation of tweet sentiment is   0.45</p>
-                                
-Percentage of tweets that have a sentiment    86.68%
-Percentage of words that have a sentiment     23.92%
+                    <p>Another thing to note is that only 24% of words have sentiment. This is mainly due to the fact that tweets have such a small amount of characters and mainly consist of stopwords. Another downfall of sentiment analysis is that in cannot pick up on the context of the tweet. For example the saddest tweet contains the word terrorism and corruption but the tweet does not appear to be sad and almost optimistic by asking "is this the end of".</p>
 
-The happiest tweet is                         7.53
-Tweet text: @realDonaldTrump Congratulations For Great victory All Indian with you #electionday
-
-The saddest tweet is                          2.62
-Tweet text: Is this the End of Terrorism ( #Elections2016 ) and Corruption? ( #ModiFightsCorruption )</p>
-
+                    <p>We can now measure the sentiment of tweets as it changes over time. These plots all called hedonometers. For the hedonometer we need to find the dates for all the tweets, we create a dictionary and save it to a file. What's particulary strange is how little flucuation there is between November 8th and 10th, the days just following the election. This may be a result of having a higher number tweets during this time period.</p>
         <div id="00982a43-61e2-424e-9db0-f71462806d4b" style="height: 100%; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("00982a43-61e2-424e-9db0-f71462806d4b", [{"y": [1374, 1397, 1425, 1436, 1444, 1520, 1563, 1590, 1630, 1646, 1701, 1718, 1718, 1874, 2053, 2092, 2540, 2581, 3456, 4925], "x": ["see", "time", "voting", "today", "via", "know", "good", "think", "make", "right", "would", "white", "going", "one", "wins", "world", "voted", "win", "people", "vote"], "type": "bar"}], {"title": "Top Ten Words from Tweets (not including query words)", "xaxis": {"title": "Word"}, "yaxis": {"title": "Occurence"}}, {"linkText": "Export to plot.ly", "showLink": true})</script>
-                </div>
+                
+                <p>Next we zoom in a little bit on the election night. It looks like people can't make up their mind as the sentiment is flucuating all over the place!</p>
 
                 <div id="f5ddd90a-ce53-41a4-a4cd-ac24114fd7af" style="height: 100%; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("f5ddd90a-ce53-41a4-a4cd-ac24114fd7af", [{"y": [1374, 1397, 1425, 1436, 1444, 1520, 1563, 1590, 1630, 1646, 1701, 1718, 1718, 1874, 2053, 2092, 2540, 2581, 3456, 4925], "x": ["see", "time", "voting", "today", "via", "know", "good", "think", "make", "right", "would", "white", "going", "one", "wins", "world", "voted", "win", "people", "vote"], "type": "bar"}], {"title": "Top Ten Words from Tweets (not including query words)", "xaxis": {"title": "Word"}, "yaxis": {"title": "Occurence"}}, {"linkText": "Export to plot.ly", "showLink": true})</script>
+
+                <p>We will now calculate the average sentiment of communities found within the graph. First we need to use a new graph that contains only user that we have tweets for. Review the subsection Creating Network With Users that have Tweets in the Network section found in the explainer notebook. Below is a brief list of notable users found in the communities.</p>
+                
+                <ul>
+                    <li><b>Community 1:</b> Snowden, SenSanders, wikileaks, MarkRuffalo. Sentiment: 5.397.</li>
+                    <li><b>Community 2:</b> washingtonpost, KeithOlbermann, nytimes, cnnbrk, NPR. Sentiment: 5.408.</li>
+                    <li><b>Community 3:</b> DonaldJTrumpJr, realDonaldTrump. Sentiment: 5.416.</li>
+                    <li><b>Community 4:</b> BreitbartNews, hectormorenco, LindaSuhler, hrtablaze. Sentiment: 5.410.</li>
+                </ul>
+
+                <p>As we can see even among the republican community, community 2, the users are not overly excited. This can be due to multiple factors, for example the character limit of the tweets being set at 140 or tweets about the election generally contain very neutral words. One possiblitly when looking at the general sentiment is the very happy posts are neutralized by the very sad posts leaving us with a neutral result!</p>
+
+                
+                </div>
                 <hr>
                 <!-- Pager -->
                 <!-- <ul class="pager">
