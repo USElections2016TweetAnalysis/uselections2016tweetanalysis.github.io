@@ -149,10 +149,8 @@
                         <p>Now that we have our graph we can have a look at the degree distributions (e.g try to indentify if the degree distributions follow
                         some kind of function):  </p>
 
-                        <a href="#">
-                           <p align="center"><img class="indegree" src="img/indegree.jpg" alt=""></p>
-                        </a>        
-                        <span class="caption text-muted">Figure 1 - In degree distribution.</span>
+                        <div id="9d4c7469-df2b-4639-b758-a23633496ac7" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("9d4c7469-df2b-4639-b758-a23633496ac7", [{"y": [71, 57331, 4618, 1315, 585, 310, 158, 96, 65, 44, 31, 24, 16, 9, 12, 8, 10, 4, 4, 3, 3, 3, 2, 1, 2, 0, 0, 2, 0, 1], "x": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], "type": "bar"}], {"title": "Distribution of in degree", "xaxis": {"title": "Degree"}, "yaxis": {"title": "Count"}}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
+                         </div>            
 
                         <a href="#">
                            <p align="center"><img class="outdegree" src="img/outdegree.JPG" alt="" align="middle"></p>
@@ -224,6 +222,8 @@
                            <p align="center"><img class="Communities" src="img/graphpartition.JPG" alt="" style="width: 50%; height: 50%"></p>
                         </a>        
                         <span class="caption text-muted">Communities in the network</span>
+
+
                         <p>We have 7 communities and we can see once more that one group is completely disconnected from the others. That is probably due to the first graph reduction (from 64k nodes to 2k nodes). This accounts had a lot of followers but they weren't popular so they've been removed. Now we have this isolated community while the others are connected.</p>
                         <a href="#">
                            <p align="center"><img class="smallpart" src="img/smallpart.jpg" alt="" align="middle" style="width: 50%; height: 50%"></p>
