@@ -25,37 +25,8 @@
     <!-- Notebook CSS -->
     <link rel="stylesheet" href="css/ipython_base.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-    <!-- Loading mathjax macro -->
-    <!-- Load mathjax -->
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-        <!-- MathJax configuration -->
-        <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                processEscapes: true,
-                processEnvironments: true
-            },
-            // Center justify equations in code and markdown cells. Elsewhere
-            // we use CSS to left justify single line equations in code cells.
-            displayAlign: 'center',
-            "HTML-CSS": {
-                styles: {'.MathJax_Display': {"margin": 0}},
-                linebreaks: { automatic: true }
-            }
-        });
-        </script>
-
-        <script>
-            $(document).ready( function() {
-                $(".notebook1").load("notebook1.html");
-            });
-        </script>
-
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -120,11 +91,9 @@
     <!-- Post Content -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
                 <!-- Notebook goes here -->
-                <div class="notebook1">
-                    
-                </div>
+                <div class="text-analysis"></div>
             </div>
         </div>
     </div>
@@ -153,7 +122,8 @@
     </footer>
 
     <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -164,6 +134,36 @@
 
     <!-- Theme JavaScript -->
     <script src="js/clean-blog.min.js"></script>
+
+    <!-- Loading mathjax macro -->
+    <!-- Load mathjax -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+
+
+    <!-- Load Ipython notebooks -->
+    <script>
+        $(document).ready( function() {
+            $(".text-analysis").load("text-analysis-notebook.html");
+        });
+    </script>
 
 </body>
 
