@@ -446,8 +446,52 @@
                         Text Analysis
                     </h2>
                     <h3 class="post-subtitle">
-                        TEXT GOES HERE
+                        Not suprisingly but people had some colourful things to say...
                     </h3>
+
+                    <p><em>People love to talk about trump.</em> Almost more then Trump likes to talk about himself. The words below were found by calculating a frequency distribution of words found in the tweets. The top ten most popular would were plotted and who would have guessed, Trump is number one by a landslide.</p>
+
+                    <div id="4294b229-b546-4c44-88fe-7f9cc6b76817" style="height: 100%; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("4294b229-b546-4c44-88fe-7f9cc6b76817", [{"y": [4925, 4975, 5619, 5694, 7477, 7593, 8609, 9544, 14873, 46373], "x": ["vote", "night", "america", "hillary", "donald", "clinton", "president", "day", "election", "trump"], "type": "bar"}], {"title": "Top Ten Words from Tweets", "xaxis": {"title": "Word"}, "yaxis": {"title": "Occurence"}}, {"linkText": "Export to plot.ly", "showLink": true})</script>
+
+                    <p>This plot may be a bit misleading though, many of the words that appear in that plot were words we used in our queries. What happens we remove all the query words?</p>
+
+                    <div id="5510f612-b21c-4494-a612-5223b47d92c1" style="height: 100%; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("5510f612-b21c-4494-a612-5223b47d92c1", [{"y": [1701, 1718, 1718, 1874, 2053, 2092, 2540, 2581, 3456, 4925], "x": ["would", "white", "going", "one", "wins", "world", "voted", "win", "people", "vote"], "type": "bar"}], {"title": "Top Ten Words from Tweets (not including query words)", "xaxis": {"title": "Word"}, "yaxis": {"title": "Occurence"}}, {"linkText": "Export to plot.ly", "showLink": true})</script>
+
+                    <p>I guess it's not suprising that we found the words <em>vote</em> and <em>voted</em> to be common when tweeting about the election.</p>
+
+                    <p>We then went a little further and calculated the TF-IDF for all the tweets and found a few things. For the uniformed, TF-IDF stands for term frequency - inverse document frequency and it is a measure of how unique a words is within a collection. TF-IDF puts less emphasis on words that appear more frequently. Some of the fun words we found are listed below.</p>
+
+                    <ul>
+                        <li><h3>dubai</h3></li>
+                        <li><h3>blah</h3></li>
+                        <li><h3>bye</h3></li>
+                        <li><h3>death</h3></li>
+                        <li><h3>leaving</h3></li>
+                    </ul>
+
+                    <p>From the TF-IDF we were able to find out that Trump was trending in India for some time as Dubia had the highest TF-IDF value.</p>
+
+                    <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Interesting to see Vote Trump trending in #dubai Strong social media presence or trollers @smwidubai</p>&mdash; Anu C (@AryanRoolz) <a href="https://twitter.com/ChrisEvans/status/796219890239733760">November 9, 2016</a></blockquote>
+
+                    <p>When analyzing TF-IDF we would that Canada was <strong>impacted</strong> by the election and felt the act of electing trump was <strong>heinous</strong>. Mexico also felt the <strong>impact</strong> but still showed some support with Hillary but commonly using the hashtag <strong>#imstillwithher</strong>. Brazil liked using the word <strong>temer</strong> and <strong>eleicoes</strong>. We'll leave the translating as an exercise.</p>
+
+                    <p>We also took a look at combining all the text from the queries and calculating the TF-IDF for that, we summarized some interesting results below with example values.</p>
+
+                    <blockquote>
+                    <h5>#NotMyPresident</h5>
+                    [(u'thoughts', 2.117053452658006), (u'stump', 2.0320841499224453), (u'claimed', 2.0320841499224453), (u'crack', 1.9735016076082625), (u'remarkable', 1.928740016689785), (u'imstillwithher', 1.908685187147373), (u'xenophobic', 1.811216782246648), (u'france', 1.8102713709277207), (u'pres', 1.7570049526821885), (u'trump', 1.7104825170104658)]
+                    </blockquote>
+
+                    <blockquote>
+                    <h5>stock market OR financial OR obama</h5>
+                    [(u'attack', 1.908685187147373), (u'blockchain', 1.8403819524871865), (u'dropping', 1.8212408475281265), (u'effect', 1.8173602329889513), (u'electionday', 1.8062030586117366), (u'uncertainty', 1.779080775844801), (u'chief', 1.765251456518164), (u'early', 1.7392008281822666), (u'virginia', 1.7304288347004635), (u'asia', 1.7169731325164517)]
+                    </blockquote>
+
+                    <blockquote>
+                    <h5>#ElectionFinalThoughts</h5>
+                    [(u'instantwingame', 2.684716305898907), (u'strategist', 2.5208883816572105), (u'kremlin', 2.226215397043603), (u'australia', 2.2052952115306517), (u'warns', 2.1921597050143062), (u'choosewisely', 2.154749103014653), (u'rant', 2.154749103014653), (u'former', 2.1512193281281813), (u'cases', 2.141413198625467), (u'debate', 2.1259473210973487)]
+                    </blockquote>
+
                 </div>
                 <hr>
                 <div class="post-preview">
@@ -457,7 +501,25 @@
                     <h3 class="post-subtitle">
                         How did people feel?
                     </h3>
+
+                    <p>Suprisingly, everyone felt a little meh. Sentiment analysis takes a look at the words in the tweet and give it a happiness score. The expected results for this election? Negative. The results? Neutral. Below are some statistics from the analysis.</p>
+
+                    <p>The average sentiment of tweet sentiment is   5.57</p>
+                    <p>The stanard deviation of tweet sentiment is   0.45</p>
+                                
+Percentage of tweets that have a sentiment    86.68%
+Percentage of words that have a sentiment     23.92%
+
+The happiest tweet is                         7.53
+Tweet text: @realDonaldTrump Congratulations For Great victory All Indian with you #electionday
+
+The saddest tweet is                          2.62
+Tweet text: Is this the End of Terrorism ( #Elections2016 ) and Corruption? ( #ModiFightsCorruption )</p>
+
+        <div id="00982a43-61e2-424e-9db0-f71462806d4b" style="height: 100%; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("00982a43-61e2-424e-9db0-f71462806d4b", [{"y": [1374, 1397, 1425, 1436, 1444, 1520, 1563, 1590, 1630, 1646, 1701, 1718, 1718, 1874, 2053, 2092, 2540, 2581, 3456, 4925], "x": ["see", "time", "voting", "today", "via", "know", "good", "think", "make", "right", "would", "white", "going", "one", "wins", "world", "voted", "win", "people", "vote"], "type": "bar"}], {"title": "Top Ten Words from Tweets (not including query words)", "xaxis": {"title": "Word"}, "yaxis": {"title": "Occurence"}}, {"linkText": "Export to plot.ly", "showLink": true})</script>
                 </div>
+
+                <div id="f5ddd90a-ce53-41a4-a4cd-ac24114fd7af" style="height: 100%; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("f5ddd90a-ce53-41a4-a4cd-ac24114fd7af", [{"y": [1374, 1397, 1425, 1436, 1444, 1520, 1563, 1590, 1630, 1646, 1701, 1718, 1718, 1874, 2053, 2092, 2540, 2581, 3456, 4925], "x": ["see", "time", "voting", "today", "via", "know", "good", "think", "make", "right", "would", "white", "going", "one", "wins", "world", "voted", "win", "people", "vote"], "type": "bar"}], {"title": "Top Ten Words from Tweets (not including query words)", "xaxis": {"title": "Word"}, "yaxis": {"title": "Occurence"}}, {"linkText": "Export to plot.ly", "showLink": true})</script>
                 <hr>
                 <!-- Pager -->
                 <!-- <ul class="pager">
