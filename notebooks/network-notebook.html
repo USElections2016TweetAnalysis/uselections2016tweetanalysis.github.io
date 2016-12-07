@@ -1,12 +1,18 @@
 <div tabindex="-1" id="notebook" class="border-box-sizing">
-<div class="container" id="notebook-container">
+    <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="NETWORK">NETWORK<a class="anchor-link" href="#NETWORK">&#182;</a></h1>
+<h1 id="NEW-NETWORK">NEW NETWORK<a class="anchor-link" href="#NEW-NETWORK">&#182;</a></h1><h2 id="Goal-:">Goal :<a class="anchor-link" href="#Goal-:">&#182;</a></h2><p>The goal of this network is to group every user we got from the scrapped tweets and their friends (e.g people they are following) and go through different step to show :</p>
+<ul>
+<li>What kind of connection they share (bipartite or small world)</li>
+<li>If they follow the same people or not ? What does that mean ?</li>
+<li>Do they belong to the same community ? </li>
+</ul>
+
 </div>
 </div>
 </div>
@@ -23,10 +29,10 @@
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-    <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#import tools for twitter API</span>
-        <span class="kn">from</span> <span class="nn">twitter</span> <span class="kn">import</span> <span class="o">*</span>
-    </pre></div>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#import tools for twitter API</span>
+<span class="kn">from</span> <span class="nn">twitter</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
 
 </div>
 </div>
@@ -37,11 +43,11 @@
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-    <div class=" highlight hl-ipython2"><pre><span></span><span class="n">properties</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span> 
-      <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;keys.properties&#39;</span><span class="p">)</span> 
-      <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
-  </pre></div>
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">properties</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span> 
+          <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;keys.properties&#39;</span><span class="p">)</span> 
+          <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+</pre></div>
 
 </div>
 </div>
@@ -52,11 +58,11 @@
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">CONSUMER_KEY</span> <span class="o">=</span> <span class="s1">&#39;CONSUMER_KEY&#39;</span>
-    <span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="s1">&#39;CONSUMER_SECRET&#39;</span>
-    <span class="n">OAUTH_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;OAUTH_TOKEN-lkfIU5F9uWRwwfnR7XiDlY5b1cOoAoe&#39;</span>
-    <span class="n">OAUTH_TOKEN_SECRET</span> <span class="o">=</span> <span class="s1">&#39;OAUTH_TOKEN_SECRET&#39;</span>
+<span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="s1">&#39;CONSUMER_SECRET&#39;</span>
+<span class="n">OAUTH_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;OAUTH_TOKEN-lkfIU5F9uWRwwfnR7XiDlY5b1cOoAoe&#39;</span>
+<span class="n">OAUTH_TOKEN_SECRET</span> <span class="o">=</span> <span class="s1">&#39;OAUTH_TOKEN_SECRET&#39;</span>
 </pre></div>
 
 </div>
@@ -68,9 +74,9 @@
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># load our API credentials </span>
-    <span class="n">twitter</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">(</span>
+<span class="n">twitter</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">(</span>
     <span class="n">auth</span> <span class="o">=</span> <span class="n">OAuth</span><span class="p">(</span><span class="n">OAUTH_TOKEN</span><span class="p">,</span> <span class="n">OAUTH_TOKEN_SECRET</span><span class="p">,</span> <span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">))</span>
 </pre></div>
 
@@ -83,14 +89,14 @@
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Credentials for tweepy (use it as complement)</span>
-    <span class="kn">import</span> <span class="nn">tweepy</span>
+<span class="kn">import</span> <span class="nn">tweepy</span>
 
-    <span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">)</span>
-    <span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">OAUTH_TOKEN</span><span class="p">,</span> <span class="n">OAUTH_TOKEN_SECRET</span><span class="p">)</span>
+<span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">)</span>
+<span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">OAUTH_TOKEN</span><span class="p">,</span> <span class="n">OAUTH_TOKEN_SECRET</span><span class="p">)</span>
 
-    <span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+<span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -119,12 +125,12 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># import Mongo for python</span>
-    <span class="kn">import</span> <span class="nn">pymongo</span><span class="o">,</span> <span class="nn">pprint</span>
-    <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<span class="kn">import</span> <span class="nn">pymongo</span><span class="o">,</span> <span class="nn">pprint</span>
+<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
 </pre></div>
 
 </div>
@@ -134,12 +140,12 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">properties</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span> 
-  <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;db.properties&#39;</span><span class="p">)</span>
-  <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+          <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;db.properties&#39;</span><span class="p">)</span>
+          <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -149,9 +155,9 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;mongodb://</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">@ds161487.mlab.com:61487/election_tweets&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">properties</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">])</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
 </pre></div>
@@ -163,15 +169,42 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">election_tweets</span>
 <span class="n">tweet_collection</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">tweets</span>
 <span class="n">user_collection</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">users</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="n">user_collection</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>87501
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -197,9 +230,9 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Import everything useful for networks</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -212,9 +245,9 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
@@ -231,7 +264,7 @@
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Create the graph</span>
 <span class="n">directed</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
 </pre></div>
@@ -243,9 +276,9 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># All twitter users in the database</span>
 <span class="n">users</span> <span class="o">=</span> <span class="n">user_collection</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
 </pre></div>
@@ -259,36 +292,36 @@
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
-<span class="c1"># We need to deal with the rate limit of twitter API</span>
-<span class="c1"># It&#39;s not the best way but it works and we don&#39;t really need more</span>
-<span class="k">try</span><span class="p">:</span>
-<span class="c1">#select the user name</span>
-<span class="n">user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
-<span class="n">username</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">screen_name</span>
+    <span class="c1"># We need to deal with the rate limit of twitter API</span>
+    <span class="c1"># It&#39;s not the best way but it works and we don&#39;t really need more</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1">#select the user name</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">screen_name</span>
 
-<span class="c1"># perform a basic search </span>
-<span class="n">query</span> <span class="o">=</span> <span class="n">twitter</span><span class="o">.</span><span class="n">friends</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="n">screen_name</span> <span class="o">=</span> <span class="n">username</span><span class="p">)</span>
-<span class="k">print</span> <span class="s2">&quot;found </span><span class="si">%d</span><span class="s2"> friends&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s2">&quot;ids&quot;</span><span class="p">]))</span>
+        <span class="c1"># perform a basic search </span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">twitter</span><span class="o">.</span><span class="n">friends</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="n">screen_name</span> <span class="o">=</span> <span class="n">username</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s2">&quot;found </span><span class="si">%d</span><span class="s2"> friends&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s2">&quot;ids&quot;</span><span class="p">]))</span>
 
-<span class="c1"># now we loop through them to pull out more info, in blocks of 100.</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s2">&quot;ids&quot;</span><span class="p">]),</span> <span class="mi">100</span><span class="p">):</span>
-<span class="n">ids</span> <span class="o">=</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;ids&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">:</span><span class="n">n</span><span class="o">+</span><span class="mi">100</span><span class="p">]</span>
+        <span class="c1"># now we loop through them to pull out more info, in blocks of 100.</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s2">&quot;ids&quot;</span><span class="p">]),</span> <span class="mi">100</span><span class="p">):</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;ids&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">:</span><span class="n">n</span><span class="o">+</span><span class="mi">100</span><span class="p">]</span>
 
-<span class="c1"># create a subquery, looking up information about these users</span>
-<span class="n">subquery</span> <span class="o">=</span> <span class="n">twitter</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">ids</span><span class="p">)</span>
+            <span class="c1"># create a subquery, looking up information about these users</span>
+            <span class="n">subquery</span> <span class="o">=</span> <span class="n">twitter</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">ids</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">user_q</span> <span class="ow">in</span> <span class="n">subquery</span><span class="p">:</span>
-<span class="c1"># now print out user info, starring any users that are Verified.</span>
-<span class="n">directed</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">user_q</span><span class="p">[</span><span class="s2">&quot;screen_name&quot;</span><span class="p">])</span>
-<span class="n">directed</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">user_q</span><span class="p">[</span><span class="s2">&quot;screen_name&quot;</span><span class="p">])</span>
-<span class="c1">#print &quot; [%s] %s&quot; % (&quot;*&quot; if user[&quot;verified&quot;] else &quot; &quot;, user[&quot;screen_name&quot;])</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="c1">#Sleep while we cannot access twitter</span>
-<span class="k">print</span> <span class="s2">&quot;Rate Limit Error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span>
-<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">15</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="mi">15</span><span class="p">)</span>
-<span class="k">continue</span>
+            <span class="k">for</span> <span class="n">user_q</span> <span class="ow">in</span> <span class="n">subquery</span><span class="p">:</span>
+                <span class="c1"># now print out user info, starring any users that are Verified.</span>
+                <span class="n">directed</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">user_q</span><span class="p">[</span><span class="s2">&quot;screen_name&quot;</span><span class="p">])</span>
+                <span class="n">directed</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">user_q</span><span class="p">[</span><span class="s2">&quot;screen_name&quot;</span><span class="p">])</span>
+                <span class="c1">#print &quot; [%s] %s&quot; % (&quot;*&quot; if user[&quot;verified&quot;] else &quot; &quot;, user[&quot;screen_name&quot;])</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1">#Sleep while we cannot access twitter</span>
+        <span class="k">print</span> <span class="s2">&quot;Rate Limit Error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">15</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="k">continue</span>
 </pre></div>
 
 </div>
@@ -416,20 +449,27 @@ details: {u&#39;request&#39;: u&#39;/1.1/friends/ids.json&#39;, u&#39;error&#39;
 found 2038 friends
 found 729 friends
 </pre>
-
-
 </div>
 </div>
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong> Draw is way too expensive, we have to do some work on the graph before. But first we save the network as a txt file so we won't have to run the code again </strong></p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
-    <span class="c1">#Saving the network</span>
-    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">directed</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;graph.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
+<span class="c1">#Saving the network</span>
+<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">directed</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;graph.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -439,11 +479,11 @@ found 729 friends
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Open the network</span>
-    <span class="n">directed</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./graph.txt&#39;</span><span class="p">))</span>
+<span class="n">directed</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./graph.txt&#39;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -464,9 +504,9 @@ found 729 friends
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-    <span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="o">%</span><span class="k">matplotlib</span> inline 
 </pre></div>
 
 </div>
@@ -478,17 +518,17 @@ found 729 friends
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Number of node</span>
-    <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;The graph has &quot;</span><span class="p">,</span> <span class="n">directed</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span><span class="s2">&quot; node and &quot;</span><span class="p">,</span> <span class="n">directed</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(),</span> <span class="s2">&quot;edges.&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;The graph has &quot;</span><span class="p">,</span> <span class="n">directed</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span><span class="s2">&quot; node and &quot;</span><span class="p">,</span> <span class="n">directed</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(),</span> <span class="s2">&quot;edges.&quot;</span><span class="p">)</span>
 
 
-    <span class="c1">#Top 10 account by in and out degree</span>
-    <span class="n">node_in_degree_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">node</span><span class="p">,</span> <span class="n">directed</span><span class="o">.</span><span class="n">in_degree</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">directed</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span> <span class="o">-</span><span class="n">d</span><span class="p">)</span>
-    <span class="n">node_out_degree_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">node</span><span class="p">,</span> <span class="n">directed</span><span class="o">.</span><span class="n">out_degree</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">directed</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span> <span class="o">-</span><span class="n">d</span><span class="p">)</span>
+<span class="c1">#Top 10 account by in and out degree</span>
+<span class="n">node_in_degree_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">node</span><span class="p">,</span> <span class="n">directed</span><span class="o">.</span><span class="n">in_degree</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">directed</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span> <span class="o">-</span><span class="n">d</span><span class="p">)</span>
+<span class="n">node_out_degree_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">node</span><span class="p">,</span> <span class="n">directed</span><span class="o">.</span><span class="n">out_degree</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">directed</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span> <span class="o">-</span><span class="n">d</span><span class="p">)</span>
 
-    <span class="k">print</span> <span class="p">(</span><span class="n">node_in_degree_tuples</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
-    <span class="k">print</span> <span class="p">(</span><span class="n">node_out_degree_tuples</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">node_in_degree_tuples</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">node_out_degree_tuples</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -502,8 +542,8 @@ found 729 friends
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>The graph has  64728  node and  78788 edges.
-    [(u&#39;wikileaks&#39;, 30), (u&#39;BarackObama&#39;, 27), (u&#39;realDonaldTrump&#39;, 27), (u&#39;HillaryClinton&#39;, 24), (u&#39;POTUS&#39;, 24), (u&#39;BernieSanders&#39;, 23), (u&#39;KellyannePolls&#39;, 22), (u&#39;mike_pence&#39;, 22), (u&#39;DRUDGE_REPORT&#39;, 21), (u&#39;RealBenCarson&#39;, 21)]
-    [(u&#39;sallykohn&#39;, 4736), (u&#39;ladygaga&#39;, 4557), (u&#39;wikileaks&#39;, 4527), (u&#39;StevenTDennis&#39;, 4507), (u&#39;stuartpstevens&#39;, 4399), (u&#39;Shottyisms&#39;, 3415), (u&#39;bad_bad_bernie&#39;, 2986), (u&#39;CaptainsLog2016&#39;, 2906), (u&#39;SanFranMoman&#39;, 2692), (u&#39;Trevor90666770&#39;, 2541)]
+[(u&#39;wikileaks&#39;, 30), (u&#39;BarackObama&#39;, 27), (u&#39;realDonaldTrump&#39;, 27), (u&#39;HillaryClinton&#39;, 24), (u&#39;POTUS&#39;, 24), (u&#39;BernieSanders&#39;, 23), (u&#39;KellyannePolls&#39;, 22), (u&#39;mike_pence&#39;, 22), (u&#39;DRUDGE_REPORT&#39;, 21), (u&#39;RealBenCarson&#39;, 21)]
+[(u&#39;sallykohn&#39;, 4736), (u&#39;ladygaga&#39;, 4557), (u&#39;wikileaks&#39;, 4527), (u&#39;StevenTDennis&#39;, 4507), (u&#39;stuartpstevens&#39;, 4399), (u&#39;Shottyisms&#39;, 3415), (u&#39;bad_bad_bernie&#39;, 2986), (u&#39;CaptainsLog2016&#39;, 2906), (u&#39;SanFranMoman&#39;, 2692), (u&#39;Trevor90666770&#39;, 2541)]
 </pre>
 </div>
 </div>
@@ -528,7 +568,7 @@ found 729 friends
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Distributions</span>
 <span class="c1"># Compute min and max values for the degrees</span>
 <span class="n">node_in_degree</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">node_in_degree_tuples</span><span class="p">)</span>
@@ -843,7 +883,7 @@ AYY6SZKkOcBQJ0mSNAcY6iRJkuaA/w/Q6aWMd//dWQAAAABJRU5ErkJggg==
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">degrees_out_bin</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">degrees_out_hist</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
@@ -1118,7 +1158,7 @@ XQAAAABJRU5ErkJggg==
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">degrees_in_bin</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">degrees_in_hist</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">)</span>
@@ -1437,7 +1477,7 @@ EXOmlN6IiPmBW4G1U0rPlh2XJPVkC5ukdndJRMxLnkTwI5M1Sc3IFjZJkqQm56QDSZKkJmfCJkmS
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">degrees_out_bin</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">degrees_out_hist</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">)</span>
@@ -1657,7 +1697,7 @@ SZIkdZwJmyRJUseZsEmSJHWcCZskSVLH/X+5mQeqy8+fIQAAAABJRU5ErkJggg==
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">degrees_in_bin</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">degrees_in_hist</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">degrees_out_bin</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">degrees_out_hist</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
@@ -1937,17 +1977,42 @@ klRx/z9Lc4E6AbrWqwAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion-on-distributions">Conclusion on distributions<a class="anchor-link" href="#Conclusion-on-distributions">&#182;</a></h2><p>In Figure 1 we can see that the most common in degree is 2, with more than 50k occurences, but after 6 in degree it seems we have no more nodes. However the out degree distribution is way broader. very few users have the same out degree but it goes from 0 to roughly 5000.</p>
+<p>The in degree distributions seem to approach a power-law as we can see the long tail (Figure 3) at the begining where the number of nodes with low degrees is really high and then it decreases as  a power-law (with a few fluctuations that mean we have a few high influential individuals that have a lot of followers).</p>
+<p>We can see that the in-degrees and out-degrees do not follow the same curve. This means that we can't expect to have as many connections coming in than coming out. And this interpretation makes sense as our network was build from a social media platform : we tend to follow more people than we have followers. The red curve in Figure 5 confirms our thoughts about the in degree distribution, it follows a power law. On the other hand, the blue curve (and the out degree distributions in general) is pretty chaotic, we can't tell if it follows any particular distribution.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Centrality-and-other-stuffs">Centrality and other stuffs<a class="anchor-link" href="#Centrality-and-other-stuffs">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>The following section draws the graph and weigth the size of a node according to its degree. The plot itself is not really important, but it looks cool !</li>
+</ul>
+<p>The graph is way too big to be drawn, so we decide to make a smaller graph. The idea is to keep the node with a degree greater than 3 only. We have a lot of isolated accounts that are quite useless in this centrality analysis.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Compute a list of nodes with a degree &lt; 1 to remove</span>
-<span class="n">to_remove</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span><span class="n">degree</span> <span class="ow">in</span> <span class="n">directed</span><span class="o">.</span><span class="n">degree</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">degree</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">to_remove</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span><span class="n">degree</span> <span class="ow">in</span> <span class="n">dire</span><span class="o">.</span><span class="n">degree</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">degree</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -1957,9 +2022,9 @@ klRx/z9Lc4E6AbrWqwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># We make a copy of the original graph</span>
 <span class="n">test</span> <span class="o">=</span> <span class="n">directed</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
@@ -1971,9 +2036,9 @@ klRx/z9Lc4E6AbrWqwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#We remove the nodes</span>
 <span class="n">test</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="n">to_remove</span><span class="p">)</span>
 </pre></div>
@@ -1987,7 +2052,7 @@ klRx/z9Lc4E6AbrWqwAAAABJRU5ErkJggg==
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Number of node</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The graph has now &quot;</span> <span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span> <span class="p">,</span> <span class="s2">&quot;nodes and and &quot;</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(),</span> <span class="s2">&quot;edges.&quot;</span><span class="p">)</span>
 
@@ -2028,7 +2093,7 @@ The top ten accounts by out degree are :
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[74]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#We can now plot the network </span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
@@ -3463,11 +3528,21 @@ SUVORK5CYII=
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As we were exepecting, it seems like we have a few central accounts and thousands of smaller ones gravitating aroung them. To learn more about these central accounts we will now go through some centrality measures. We perform these algorithms on the reduced network as these measures are very costly</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[62]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># We need an undirectd graph</span>
 <span class="n">undir</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">()</span>
 </pre></div>
@@ -3481,7 +3556,7 @@ SUVORK5CYII=
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[81]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Betweeness centrality</span>
 <span class="n">between_centrality</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">betweenness_centrality</span><span class="p">(</span><span class="n">undir</span><span class="p">)</span>
 <span class="n">between_centrality_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">between_centrality</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="o">-</span><span class="n">value</span><span class="p">)</span>
@@ -3511,11 +3586,21 @@ SUVORK5CYII=
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Betweeness centrality measures how central a node is. Users with a high betweenness centrality may have a good followers/following ratio. We will look into these accounts later on.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[83]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Eigen vector centrality</span>
 <span class="n">eigen_centrality</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">eigenvector_centrality</span><span class="p">(</span><span class="n">undir</span><span class="p">)</span>
 <span class="n">eigen_centrality_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">eigen_centrality</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="o">-</span><span class="n">value</span><span class="p">)</span>
@@ -3561,7 +3646,7 @@ SUVORK5CYII=
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[85]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#In degree centrality</span>
 <span class="n">in_centrality</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">in_degree_centrality</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
 <span class="n">in_centrality_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">in_centrality</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="o">-</span><span class="n">value</span><span class="p">)</span>
@@ -3591,11 +3676,21 @@ SUVORK5CYII=
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>These names are familiar but...</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[86]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#out degree centrality</span>
 <span class="n">out_centrality</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">out_degree_centrality</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
 <span class="n">out_centrality_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">out_centrality</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="o">-</span><span class="n">value</span><span class="p">)</span>
@@ -3625,11 +3720,21 @@ SUVORK5CYII=
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>... these ones aren't. And once again, that makes sense, famous users will have more followers, but as an average person, you can follow as many people as you want !</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[94]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Now we want to check if there is a path between Clinton and Trump on both networks</span>
 <span class="k">print</span> <span class="n">nx</span><span class="o">.</span><span class="n">has_path</span><span class="p">(</span><span class="n">undir</span><span class="p">,</span> <span class="s1">u&#39;HillaryClinton&#39;</span><span class="p">,</span>  <span class="s1">u&#39;realDonaldTrump&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">nx</span><span class="o">.</span><span class="n">has_path</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="s1">u&#39;HillaryClinton&#39;</span><span class="p">,</span>  <span class="s1">u&#39;realDonaldTrump&#39;</span><span class="p">)</span>
@@ -3659,7 +3764,7 @@ False
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[99]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path_length</span><span class="p">(</span><span class="n">undir</span><span class="p">,</span> <span class="s1">u&#39;HillaryClinton&#39;</span><span class="p">,</span>  <span class="s1">u&#39;realDonaldTrump&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path_length</span><span class="p">(</span><span class="n">undir</span><span class="p">,</span> <span class="s1">u&#39;HillaryClinton&#39;</span><span class="p">,</span>  <span class="s1">u&#39;wikileaks&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path_length</span><span class="p">(</span><span class="n">undir</span><span class="p">,</span> <span class="s1">u&#39;BarackObama&#39;</span><span class="p">,</span>  <span class="s1">u&#39;realDonaldTrump&#39;</span><span class="p">)</span>
@@ -3691,7 +3796,49 @@ False
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion-on-centrality">Conclusion on centrality<a class="anchor-link" href="#Conclusion-on-centrality">&#182;</a></h2><p>The results we have on centrality measures let us think that we have quite a good network. We have famous people with a lot of followers and Twitter addicts with a lot of "friends". It is also interesting to note that the betweeness centrality and the eigenvector centrality do not provide the exact same results. It will be interesting to see if we come across these names again when dealing with communities (and we'll see who these people actually are !).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Problem-importing-community">Problem importing community<a class="anchor-link" href="#Problem-importing-community">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Community-detection">Community detection<a class="anchor-link" href="#Community-detection">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Louvain-Algorithm">Louvain Algorithm<a class="anchor-link" href="#Louvain-Algorithm">&#182;</a></h3><p>To perform community detection we'll use the Louvain algorithm. The inspiration for this method of community detection is the optimization of Modularity as the algorithm progresses.  Modularity is one measure between -1 and 1 of the structure of networks. It was designed to measure the strength of division of a network into modules (also called groups, clusters or communities). Networks with high modularity have dense connections between the nodes within modules but sparse connections between nodes in different modules. (WikipÃ©dia)</p>
+
 </div>
 </div>
 </div>
@@ -3699,7 +3846,7 @@ False
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[254]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">community</span>
 </pre></div>
 
@@ -3710,9 +3857,9 @@ False
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">partition</span> <span class="o">=</span> <span class="n">community</span><span class="o">.</span><span class="n">best_partition</span><span class="p">(</span><span class="n">undir</span><span class="p">)</span>
 <span class="c1">## We know after the post hoc analysis that we need only 7 color.</span>
@@ -3722,11 +3869,11 @@ False
 <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">undir</span><span class="p">)</span>
 <span class="n">count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 <span class="k">for</span> <span class="n">com</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">partition</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="p">:</span>
-<span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="n">list_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">nodes</span> <span class="k">for</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">partition</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">partition</span><span class="p">[</span><span class="n">nodes</span><span class="p">]</span> <span class="o">==</span> <span class="n">com</span><span class="p">]</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">undir</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">list_nodes</span><span class="p">,</span> <span class="n">node_size</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
-<span class="n">node_color</span> <span class="o">=</span> <span class="n">color_map</span><span class="p">[</span><span class="n">count</span><span class="p">])</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">list_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">nodes</span> <span class="k">for</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">partition</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                                <span class="k">if</span> <span class="n">partition</span><span class="p">[</span><span class="n">nodes</span><span class="p">]</span> <span class="o">==</span> <span class="n">com</span><span class="p">]</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">undir</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">list_nodes</span><span class="p">,</span> <span class="n">node_size</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+                                <span class="n">node_color</span> <span class="o">=</span> <span class="n">color_map</span><span class="p">[</span><span class="n">count</span><span class="p">])</span>
 
 <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">undir</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;partitions.pdf&quot;</span><span class="p">)</span>
@@ -3734,6 +3881,364 @@ False
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmAAAAFwCAYAAAAfVcfWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAALEgAACxIB0t1+/AAAIABJREFUeJzs3Xl4VPXZ//H3N5MVksgWIGELBgSs0oo/ARc0KFjUulRb
+EaqPC1iXaq2tlWqtYlftqo+KggStirg81toiVWslalsRVJSqYScRwhaQJUD2fH9/3GcykxBoJeGE
+1M/runJNZubMOTOD15WP9/c+93Hee0REREQkPAlt/QZEREREPm8UwERERERCpgAmIiIiEjIFMBER
+EZGQKYCJiIiIhEwBTERERCRkrRLAnHPjnHNLnXPLnXNTmnk+0zn3J+fc+865fznnLmuN44qIiIi0
+R66lc8CccwnAcuA0YD2wCLjIe780bptbgEzv/S3OuW7AMqCH9762RQcXERERaYdaowI2HFjhvS/x
+3tcATwHnNtnGAxnB7xnAVoUvERER+bxqjQDWC1gbd39d8Fi8+4EjnXPrgQ+AG1rhuCIiIiLtUlhN
++F8GFnvvc4BjgAecc+khHVtERETkkJLYCvsoBfrG3e8dPBbvcuAXAN77Vc65NcBg4J2mO3PO6eKU
+IiIi0m54791nfU1rVMAWAQOcc/2cc8nARcCfmmxTAowBcM71AI4AVu9rh957/RzAzx133NHm76E9
+/+j70/en7659/uj70/fXlj8HqsUVMO99nXPuOuAVLNAVeO+LnHNX2dN+BvBT4FHn3JLgZTd77z9t
+6bFFRERE2qPWWILEe/8SMKjJY9Pjft+A9YGJiIiIfO5pEv5/kfz8/LZ+C+2avr+W0fd34PTdtYy+
+v5bR99c2WjyItbU55/yh9p5EREREmuOcw7dRE76IiIiIfAYKYCIiIiIhUwATERERCZkCmIiIiEjI
+FMBEREREQqYAJiIiIhIyBTARERGRkCmAiYiIiIRMAUxEREQkZApgIiIiIiFTABMREREJmQKYiIiI
+SMgUwERERERCpgAmIiIiEjIFMBEREZGQKYCJiIiIhEwBTERERCRkCmAiIiIiIVMAExGR0JWVlbFo
+0SLKysra+q2ItAkFMBERCdWcOXPo168fY8eOpV+/fsyZM6et35JI6Jz3vq3fQyPOOX+ovScREWkd
+ZWVl9OvXj4qKiobH0tLSKCkpISsrqw3fmciBcc7hvXef9XWJB+PNiIiINKe4uJjk5ORGASwxMZHi
+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
+M2txDxhQCvSNu987eKyB935X3O9/cc5Nc8518d5/2twOp06d2vB7fn4++fn5rfA2RURE2sbChQvp
+06dx5So7G37yE3j8cZtuf8EF1oA/fjxkZsKoUVbtWrPGGu43bLDXTZli15DMybEwdvLJY3nppVfa
+9gN+jhQWFlJYWNji/bRGD1gEWIY14W8AFgITvPdFcdv08N5vCn4fDjzjvc/dx/7UAyYiIv9VioqK
+OPbYIxv1bo0YAc7t3c8VvfbjI49A//7WiH/ssXatyMMPh1WrICPDBrWedtqXefHFl9r6432utVkP
+mPe+DrgOeAX4CHjKe1/knLvKOffNYLOvOec+dM4tBu4Bxrf0uCIiIu3FkCFDuPLK6xg5Eo44wipY
+48adTV5eaqOqWNeucM45VvHq3h2OO84qX1u3Wm/YLbfYRP3f/Q7S0lJ59NHH2/aDyQHTpYhERERC
+UlRUxMKFCxk+fDjdunVruGRRtAI2cqSd6VhXZ6MpomdIZmfncuaZZ/Lkk4/Qr18SJSU1TJtWoAtx
+HwJ0LUgREZF2JnrR7m7dqtmwAerrI3z3u9/n4ov/h3/9619s2rSJMWPGNJzdWFZW1mi2mLQ9BTAR
+EZF2qKysjMWLFwNwzDHHKFi1MwpgIiIiIiFry0GsIiIiIvIZKICJiIiIhEwBTERERCRkCmAiIiIi
+IVMAExEREQmZApiIiIhIyBTAREREREKmACYiIiISMgUwERERkZApgImIiIiETAFMREREJGQKYCIi
+IiIhUwATERERCZkCmIiIiEjIFMBEREREQqYAJiIiIhIyBTARERGRkCmAiYiIiIRMAUxEREQkZApg
+IiIiIiFTABMREREJmQKYiIiISMgUwERERERCpgAmIiIiEjIFMBEREZGQtUoAc86Nc84tdc4td85N
+2c92xznnapxz57fGcUVERETaoxYHMOdcAnA/8GXgC8AE59zgfWx3F/ByS48pIiIi0p61RgVsOLDC
+e1/iva8BngLObWa764H/Aza3wjFFRERE2q3WCGC9gLVx99cFjzVwzuUA53nvHwRcKxxTREREpN0K
+qwn/HiC+N0whTERERD63ElthH6VA37j7vYPH4v0/4CnnnAO6AWc452q8939qbodTp05t+D0/P5/8
+/PxWeJsiIiIiLVNYWEhhYWGL9+O89y3bgXMRYBlwGrABWAhM8N4X7WP7R4A/e+//sI/nfUvfk4iI
+iEgYnHN47z/zyl6LK2De+zrn3HXAK9iSZoH3vsg5d5U97Wc0fUlLjykiIiLSnrW4AtbaVAETERGR
+9uJAK2CahC8iIiISMgUwERERkZApgImIiIiETAFMREREJGQKYCIiIiIhUwATERERCZkCmIiIiEjI
+FMBEREREQqYAJiIiIhIyBTARERGRkCmAiYiIiIRMAUxEREQkZApgIiIiIiFTABMREREJmQKYiIiI
+SMgUwERERERCpgAmIiIiEjIFMBEREZGQKYCJiIiIhEwBTERERCRkCmAiIiIiIVMAExEREQmZApiI
+iIhIyBTAREREREKmACYiIiISMgUwERERkZApgImIiIiETAFMREREJGStEsCcc+Occ0udc8udc1Oa
+ef4c59wHzrnFzrmFzrkTW+O4IiIiIu2R8963bAfOJQDLgdOA9cAi4CLv/dK4bTp47/cEvx8NPOO9
+H7KP/fmWvicRERGRMDjn8N67z/q61qiADQdWeO9LvPc1wFPAufEbRMNXIB2ob4XjioiIiLRLrRHA
+egFr4+6vCx5rxDl3nnOuCPgzcEUrHFdERESkXQqtCd97/8dg2fE84KdhHVdERETkUJPYCvsoBfrG
+3e8dPNYs7/3fnXOHO+e6eO8/bW6bqVOnNvyen59Pfn5+K7xNERERkZYpLCyksLCwxftpjSb8CLAM
+a8LfACwEJnjvi+K2yfPerwp+Hwa84L3vs4/9qQlfRERE2oUDbcJvcQXMe1/nnLsOeAVb0izw3hc5
+566yp/0M4ALn3P8A1UAFcGFLjysiIiLSXrW4AtbaVAETERGR9qItx1CIiIiIyGegACYiIiISMgUw
+ERERkZApgImIiIiETAFMREREJGQKYCIiIiIhUwATERERCZkCmIiIiEjIFMBEREREQqYAJiIiIhIy
+BTARERGRkCmAiYiIiIRMAUxEREQkZApgIiIiIiFTABMREREJmQKYiIiISMgUwERERERCpgAmIiIi
+EjIFMBEREZGQKYCJiIiIhEwBTERERCRkCmAiIiIiIVMAExEREQmZApiIiIhIyBTAREREREKmACYi
+IiISMgUwERERkZApgImIiIiErFUCmHNunHNuqXNuuXNuSjPPT3TOfRD8/N05d3RrHFdERESkPXLe
++5btwLkEYDlwGrAeWARc5L1fGrfNSKDIe7/DOTcOmOq9H7mP/fmWvicRERGRMDjn8N67z/q61qiA
+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
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -3751,7 +4256,7 @@ False
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">louvain_modularity</span> <span class="o">=</span> <span class="n">community</span><span class="o">.</span><span class="n">modularity</span><span class="p">(</span><span class="n">partition</span><span class="p">,</span> <span class="n">undir</span><span class="p">)</span>
 <span class="n">louvain_modularity</span>
 </pre></div>
@@ -3794,16 +4299,16 @@ False
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">communities</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="c1"># Create a dictionary of all communities and their associated user </span>
 <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">community_index</span> <span class="ow">in</span> <span class="n">partition</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-<span class="k">if</span> <span class="n">community_index</span> <span class="ow">in</span> <span class="n">communities</span><span class="p">:</span>
-<span class="n">communities</span><span class="p">[</span><span class="n">community_index</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-<span class="n">communities</span><span class="p">[</span><span class="n">community_index</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">user</span><span class="p">}</span>
-
+    <span class="k">if</span> <span class="n">community_index</span> <span class="ow">in</span> <span class="n">communities</span><span class="p">:</span>
+        <span class="n">communities</span><span class="p">[</span><span class="n">community_index</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">communities</span><span class="p">[</span><span class="n">community_index</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">user</span><span class="p">}</span>
+    
 <span class="n">nb_communities</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">communities</span><span class="p">)</span>
 <span class="n">nb_communities</span>
 </pre></div>
@@ -3845,27 +4350,8 @@ False
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">communities</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;community.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;community1.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
-<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;community2.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
-<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;community3.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
-<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">3</span><span class="p">],</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;community4.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
-<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">4</span><span class="p">],</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;community5.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
-<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">5</span><span class="p">],</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;community6.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
-<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">6</span><span class="p">],</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;community7.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -3887,7 +4373,7 @@ False
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">ind</span> <span class="o">=</span> <span class="n">induced_graph</span><span class="p">(</span><span class="n">partition</span><span class="p">,</span> <span class="n">undir</span><span class="p">)</span>
 <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">node_color</span> <span class="o">=</span> <span class="n">color_map</span><span class="p">)</span>
@@ -4104,18 +4590,28 @@ EAAAgAIJAQAAKJAQAACAAv3/pk0kUaKEN3oAAAAASUVORK5CYII=
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can see once more that one group is completely disconnected from the others. <strong> That is probably due to the first graph reduction (from 64k nodes to 2k nodes). </strong> This accounts had a lot of followers but they weren't popular so they've been removed. Now we have this isolated community while the others are connected. Let's dig into these communities.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[220]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">com</span><span class="o">=</span> <span class="p">[</span><span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
-<span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span>
-<span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span>
-<span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">3</span><span class="p">],</span>
-<span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">4</span><span class="p">],</span>
-<span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">5</span><span class="p">],</span>
-<span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">6</span><span class="p">],</span>
+    <span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">3</span><span class="p">],</span>
+    <span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">5</span><span class="p">],</span>
+    <span class="n">communities</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">6</span><span class="p">],</span>
 <span class="p">]</span>
 </pre></div>
 
@@ -4128,19 +4624,19 @@ EAAAgAIJAQAAKJAQAACAAv3/pk0kUaKEN3oAAAAASUVORK5CYII=
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[253]:</div>
 <div class="inner_cell">
-<div class="input_area">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#Top 10 account by in and out degree</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">):</span>
-<span class="n">node</span> <span class="o">=</span> <span class="n">com</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-<span class="n">sub</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-<span class="n">node_in_degree_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">node</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">in_degree</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sub</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span> <span class="o">-</span><span class="n">d</span><span class="p">)</span>
-<span class="n">node_out_degree_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">node</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">out_degree</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sub</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span> <span class="o">-</span><span class="n">d</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;In community &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The top ten accounts by in degree are : &quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span> <span class="n">node_in_degree_tuples</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The top ten accounts by out degree are : &quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span> <span class="n">node_out_degree_tuples</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">com</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="n">node_in_degree_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">node</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">in_degree</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sub</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span> <span class="o">-</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">node_out_degree_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">node</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">out_degree</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sub</span><span class="o">.</span><span class="n">nodes</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span> <span class="o">-</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;In community &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The top ten accounts by in degree are : &quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="n">node_in_degree_tuples</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The top ten accounts by out degree are : &quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="n">node_out_degree_tuples</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -4210,5 +4706,16 @@ The top ten accounts by out degree are :
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<h2 id="Conclusion-on-communities">Conclusion on communities<a class="anchor-link" href="#Conclusion-on-communities">&#182;</a></h2>
+<p> For a complete analysis, please see the home page of the website</p>
 </div>
 </div>
+</div>
+    </div>
+  </div>

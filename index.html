@@ -32,6 +32,11 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- d3.js -->
+    <script src="js/d3.min.js"></script>
+    <!-- Plotlyjs -->
+    <script src="js/plotly-latest.min.js"></script>
+
 </head>
 
 <body>
@@ -94,6 +99,14 @@
                     </h2>
                     <h3 class="post-subtitle">
                         A brief overview of what we found and did. Includes our coolest discoveries.
+
+                        <p>You can follow the report into greater details through the following sections :
+                        <ul>
+                            <li>Data Overview: </li>
+                            <li>Twitter Network</li>
+                            <li>Text Analysis</li>
+                            <li>Sentiment Analysis</li>
+                        </ul>
                     </h3>
                 </div>
                 <hr>
@@ -102,7 +115,20 @@
                         Data Overview
                     </h2>
                     <h3 class="post-subtitle">
-                        This includes how we got our data, how much and some more descriptive information.
+                        <p>The data we are working on is a collection of tweets from Twitter retrieved during the period of the elections.
+                        For this, we focused on collecting tweets from the week prior to election day to the week after election day.</p>
+                        <img id="collection-timeline" src="img/collection_timeline.png" />
+
+                        <p>To retrieve the data, we came up with custom queries to collect tweets related to the elections, by using hashtags and
+                        focusing on some countries of the world that seemed relevant to study.</p>
+
+                        <p>In total, after collecting more than <i>4GB</i> of tweets,
+                            we extracted <b>90909</b> unique tweets and <b>68359</b> unique users.</p>
+
+                        A first interesting overview of the data is to see how many tweets we collected per hour during the elections.
+
+                        <div id="4376ed95-c215-422b-9640-ff1904a54bf0" style="height: 100%; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("4376ed95-c215-422b-9640-ff1904a54bf0", [{"y": [1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 9, 3, 1, 1, 2, 6, 4, 1, 6, 3, 2, 4, 1, 1, 1, 11, 1, 16, 2, 2, 12, 4, 1, 1, 3, 1, 7, 1, 2, 3, 6, 27, 43, 7, 4, 7, 27, 6, 21, 4, 9, 14, 1, 1, 1, 2, 20, 1, 1, 18, 13, 1, 35, 1, 55, 1, 9, 56, 4, 1, 1, 1, 5, 9, 3, 47, 48, 1, 10, 14, 5, 7, 9, 1, 28, 33, 33, 60, 9, 11, 19, 21, 38, 15, 24, 1, 7, 14, 5, 9, 1, 10, 18, 11, 1, 33, 710, 5, 3, 11, 5, 11, 16, 32, 14, 11, 4, 47, 7, 774, 49, 8, 803, 2, 32, 65, 4, 1, 1, 44, 6, 19, 48, 49, 118, 107, 3177, 3058, 1, 27, 1, 23, 1, 64, 1, 35, 8, 1, 2285, 172, 3, 26, 129, 212, 17, 27, 179, 1, 170, 1, 116, 295, 111, 1, 11, 11, 39, 28, 4, 18, 25, 145, 45, 5, 1, 1, 3, 61, 11, 11, 1, 2569, 1, 1, 3, 25, 1, 23, 696, 13, 18, 101, 47, 362, 1, 1, 85, 1, 4, 4739, 1, 1, 42, 1, 38, 4, 86, 1, 534, 6, 35, 35, 33, 29, 573, 1, 350, 2927, 10, 2, 146, 2, 34, 1050, 38, 1, 54, 23, 1, 14, 10, 43, 87, 23, 23, 86, 258, 1, 10, 1, 97, 9, 28, 45, 91, 38, 1, 374, 137, 67, 31, 27, 31, 703, 34, 45, 2, 4962, 2, 3681, 3388, 2410, 2090, 78, 35, 1, 1, 85, 58, 75, 25, 7, 722, 1, 598, 80, 26, 3, 1, 2481, 1486, 2, 20, 15, 71, 17, 556, 25, 88, 2, 26, 43, 239, 24, 720, 1, 1, 2, 2246, 96, 56, 93, 3306, 60, 263, 19, 28, 45, 1, 51, 5604, 1, 285, 1, 16, 113, 98, 3632, 118, 2, 1, 9, 1, 1, 87, 613, 6, 56, 138, 98, 35, 3900, 13, 39, 217, 121, 31, 45, 838, 5, 66, 62, 1, 4, 3478, 1, 7, 2064, 1, 33, 1158, 1, 14, 1742, 84, 46, 77, 55, 31, 10, 91, 38, 1, 64, 94, 275, 1303, 30, 225, 262, 258, 151, 107, 1207, 109, 47, 235, 4, 78, 32, 178, 16, 55, 83, 90, 36, 1, 39, 2, 53, 326, 63, 71, 1, 35, 74, 35, 1, 144, 248, 4, 1, 132, 126, 1, 59, 54, 91, 128, 33, 69, 861, 1, 3, 1, 81, 46, 715, 87, 68, 28, 834, 77, 16, 1, 34, 223, 60, 5, 786, 62, 57, 1, 54, 91, 48, 40, 796, 19, 20, 7, 20, 261, 13, 29, 13, 57, 273, 26, 63, 1, 3, 1, 26, 31, 9, 1, 3332, 10, 118, 56, 8, 1, 13, 1, 214, 10, 444, 131, 132, 12, 14, 13, 36, 1, 4, 242, 1, 102, 1, 54, 66, 143, 243, 1, 120, 14, 15, 12, 12, 38, 13, 24, 39, 5, 37, 54, 22, 25, 58, 18, 10, 3, 1, 208, 14, 86, 3202, 61, 14, 44, 12, 7, 28, 22, 1, 30, 39, 35, 36, 40, 116, 1458, 38, 15, 1126, 39], "x": ["2016-10-10 01:00:00", "2016-10-18 20:00:00", "2016-10-10", "2016-10-23 16:00:00", "2016-10-11 21:00:00", "2016-12-11 06:00:00", "2016-10-29 13:00:00", "2016-10-30 14:00:00", "2016-10-23 01:00:00", "2016-10-30 04:00:00", "2016-10-29 12:00:00", "2016-11-01 03:00:00", "2016-10-31 07:00:00", "2016-10-29 07:00:00", "2016-10-29 17:00:00", "2016-10-29 20:00:00", "2016-11-01 06:00:00", "2016-10-30 08:00:00", "2016-10-29 03:00:00", "2016-11-02 08:00:00", "2016-10-30 12:00:00", "2016-10-31 09:00:00", "2016-11-01 09:00:00", "2016-10-30 11:00:00", "2016-10-30 17:00:00", "2016-10-23", "2016-11-03 11:00:00", "2016-10-30 20:00:00", "2016-11-05 09:00:00", "2016-10-31 06:00:00", "2016-10-29 21:00:00", "2016-10-31 05:00:00", "2016-11-02 09:00:00", "2016-10-29 05:00:00", "2016-11-03 07:00:00", "2016-10-31 10:00:00", "2016-10-29 23:00:00", "2016-10-30 23:00:00", "2016-10-29 10:00:00", "2016-11-03 08:00:00", "2016-10-30 13:00:00", "2016-11-02 07:00:00", "2016-11-14 07:00:00", "2016-11-14 08:00:00", "2016-11-04 08:00:00", "2016-11-02 04:00:00", "2016-11-04 09:00:00", "2016-11-06", "2016-10-31 17:00:00", "2016-11-06 09:00:00", "2016-11-03 10:00:00", "2016-11-04 07:00:00", "2016-11-03 09:00:00", "2016-10-18 01:00:00", "2016-10-15 21:00:00", "2016-10-29 01:00:00", "2016-11-01 07:00:00", "2016-11-06 05:00:00", "2016-10-20 14:00:00", "2016-10-26 17:00:00", "2016-11-05 02:00:00", "2016-11-05 10:00:00", "2016-10-26 20:00:00", "2016-11-05 16:00:00", "2016-10-27 17:00:00", "2016-11-05 17:00:00", "2016-10-29 04:00:00", "2016-11-04 10:00:00", "2016-11-05 18:00:00", "2016-10-30 09:00:00", "2016-10-27 22:00:00", "2016-10-12 07:00:00", "2016-10-26 11:00:00", "2016-10-30 06:00:00", "2016-11-04 05:00:00", "2016-10-31 13:00:00", "2016-11-04 15:00:00", "2016-11-04 16:00:00", "2016-10-27 02:00:00", "2016-11-04", "2016-11-04 12:00:00", "2016-11-04 06:00:00", "2016-11-03 13:00:00", "2016-11-04 01:00:00", "2016-10-08 09:00:00", "2016-11-04 13:00:00", "2016-11-04 19:00:00", "2016-11-04 21:00:00", "2016-11-04 22:00:00", "2016-10-30 16:00:00", "2016-11-03 04:00:00", "2016-11-03 17:00:00", "2016-11-03 15:00:00", "2016-11-03 22:00:00", "2016-11-03 16:00:00", "2016-11-03 18:00:00", "2016-10-24 21:00:00", "2016-11-02 03:00:00", "2016-11-02 06:00:00", "2016-11-02 11:00:00", "2016-10-31 15:00:00", "2016-10-11 03:00:00", "2016-11-02 12:00:00", "2016-11-02 15:00:00", "2016-11-03 03:00:00", "2016-10-24 01:00:00", "2016-11-02 19:00:00", "2016-11-02 23:00:00", "2016-11-16", "2016-11-16 10:00:00", "2016-11-05 07:00:00", "2016-11-16 07:00:00", "2016-11-16 04:00:00", "2016-11-16 11:00:00", "2016-11-16 12:00:00", "2016-11-16 02:00:00", "2016-10-31 18:00:00", "2016-11-16 09:00:00", "2016-11-16 13:00:00", "2016-11-16 06:00:00", "2016-11-16 14:00:00", "2016-11-15 10:00:00", "2016-11-13 04:00:00", "2016-11-15 23:00:00", "2016-10-30 07:00:00", "2016-11-05 14:00:00", "2016-11-14 15:00:00", "2016-10-29 22:00:00", "2016-10-20 07:00:00", "2016-10-07 03:00:00", "2016-11-12 19:00:00", "2016-11-02 05:00:00", "2016-11-01 08:00:00", "2016-11-06 01:00:00", "2016-11-13 19:00:00", "2016-11-10 15:00:00", "2016-11-09 19:00:00", "2016-11-09 06:00:00", "2016-11-09 02:00:00", "2016-10-27 18:00:00", "2016-11-14 03:00:00", "2016-10-31", "2016-11-03 20:00:00", "2016-10-20 01:00:00", "2016-11-15 04:00:00", "2016-10-16 01:00:00", "2016-11-14 02:00:00", "2016-11-02 02:00:00", "2016-10-20 15:00:00", "2016-11-09 04:00:00", "2016-11-15 17:00:00", "2016-10-29 15:00:00", "2016-11-06 07:00:00", "2016-11-15 18:00:00", "2016-11-10 22:00:00", "2016-11-05 01:00:00", "2016-11-07 02:00:00", "2016-11-07 14:00:00", "2016-10-14 22:00:00", "2016-11-10 17:00:00", "2016-10-14 11:00:00", "2016-11-11 03:00:00", "2016-11-08 14:00:00", "2016-11-08 10:00:00", "2016-10-11 18:00:00", "2016-11-04 03:00:00", "2016-10-31 14:00:00", "2016-11-06 13:00:00", "2016-11-06 03:00:00", "2016-10-31 04:00:00", "2016-11-02 17:00:00", "2016-11-02 20:00:00", "2016-11-11 19:00:00", "2016-11-12 18:00:00", "2016-10-29 06:00:00", "2016-10-16", "2016-10-28 04:00:00", "2016-10-31 11:00:00", "2016-11-15 05:00:00", "2016-11-04 04:00:00", "2016-11-03", "2016-10-12 15:00:00", "2016-11-09", "2016-10-06 09:00:00", "2016-10-20", "2016-10-30 21:00:00", "2016-11-04 14:00:00", "2016-10-28 17:00:00", "2016-11-12 14:00:00", "2016-11-05 23:00:00", "2016-11-02 13:00:00", "2016-11-13 08:00:00", "2016-11-11 11:00:00", "2016-11-05 20:00:00", "2016-11-07 16:00:00", "2016-10-19 11:00:00", "2016-10-08 11:00:00", "2016-11-08 07:00:00", "2016-10-21 17:00:00", "2016-10-31 16:00:00", "2016-11-08 23:00:00", "2016-10-07 14:00:00", "2016-10-16 04:00:00", "2016-11-07 03:00:00", "2016-10-10 19:00:00", "2016-11-02 21:00:00", "2016-10-30 22:00:00", "2016-11-14 22:00:00", "2016-10-31 08:00:00", "2016-11-08 17:00:00", "2016-11-03 12:00:00", "2016-11-06 14:00:00", "2016-11-14 09:00:00", "2016-11-06 11:00:00", "2016-11-04 18:00:00", "2016-11-07 17:00:00", "2016-10-18 02:00:00", "2016-11-08 15:00:00", "2016-11-09 05:00:00", "2016-11-03 05:00:00", "2016-10-30 05:00:00", "2016-11-07 11:00:00", "2016-10-30 03:00:00", "2016-11-03 19:00:00", "2016-11-07 20:00:00", "2016-11-15 01:00:00", "2016-10-19 07:00:00", "2016-11-08 02:00:00", "2016-11-13", "2016-10-05 20:00:00", "2016-11-03 02:00:00", "2016-11-16 01:00:00", "2016-11-05 19:00:00", "2016-11-07 08:00:00", "2016-11-05 12:00:00", "2016-11-05 13:00:00", "2016-11-07 09:00:00", "2016-11-08 13:00:00", "2016-10-12 22:00:00", "2016-11-05 05:00:00", "2016-10-25 02:00:00", "2016-11-14 20:00:00", "2016-11-16 05:00:00", "2016-11-06 06:00:00", "2016-11-14 04:00:00", "2016-11-14 18:00:00", "2016-11-06 15:00:00", "2016-10-17 21:00:00", "2016-11-15 21:00:00", "2016-11-12 01:00:00", "2016-11-06 20:00:00", "2016-11-13 09:00:00", "2016-11-06 08:00:00", "2016-11-07", "2016-11-06 23:00:00", "2016-11-06 16:00:00", "2016-11-04 17:00:00", "2016-10-30 18:00:00", "2016-11-09 11:00:00", "2016-10-30 02:00:00", "2016-11-08 21:00:00", "2016-11-09 09:00:00", "2016-11-09 17:00:00", "2016-11-07 18:00:00", "2016-11-06 21:00:00", "2016-11-07 01:00:00", "2016-10-22 22:00:00", "2016-10-28 06:00:00", "2016-11-11 12:00:00", "2016-11-08 01:00:00", "2016-11-07 05:00:00", "2016-11-05 04:00:00", "2016-11-02 01:00:00", "2016-11-04 23:00:00", "2016-12-09 17:00:00", "2016-11-08 19:00:00", "2016-11-07 07:00:00", "2016-11-12 10:00:00", "2016-11-16 08:00:00", "2016-10-13 20:00:00", "2016-11-09 03:00:00", "2016-11-12 08:00:00", "2016-10-20 02:00:00", "2016-11-01 21:00:00", "2016-11-06 12:00:00", "2016-11-15 14:00:00", "2016-11-12 13:00:00", "2016-11-07 19:00:00", "2016-11-02 16:00:00", "2016-11-07 10:00:00", "2016-10-14 17:00:00", "2016-11-01 20:00:00", "2016-11-06 19:00:00", "2016-11-12 05:00:00", "2016-11-13 12:00:00", "2016-11-01 23:00:00", "2016-10-03 18:00:00", "2016-12-04 11:00:00", "2016-10-30 19:00:00", "2016-11-09 15:00:00", "2016-11-11 22:00:00", "2016-11-05 22:00:00", "2016-11-07 21:00:00", "2016-11-09 08:00:00", "2016-11-08 03:00:00", "2016-11-10 18:00:00", "2016-11-05 08:00:00", "2016-11-13 11:00:00", "2016-11-08 04:00:00", "2016-10-29 02:00:00", "2016-11-08", "2016-11-09 10:00:00", "2016-10-24 23:00:00", "2016-11-11 06:00:00", "2016-10-12 19:00:00", "2016-11-03 14:00:00", "2016-11-11 14:00:00", "2016-11-13 22:00:00", "2016-11-09 07:00:00", "2016-11-08 11:00:00", "2016-10-29 09:00:00", "2016-10-16 14:00:00", "2016-11-02 10:00:00", "2016-10-18 13:00:00", "2016-10-28 22:00:00", "2016-11-08 08:00:00", "2016-11-08 18:00:00", "2016-11-01 10:00:00", "2016-11-08 05:00:00", "2016-11-07 13:00:00", "2016-11-11 02:00:00", "2016-11-10 06:00:00", "2016-11-08 22:00:00", "2016-11-03 01:00:00", "2016-11-05 15:00:00", "2016-11-10 20:00:00", "2016-11-07 22:00:00", "2016-11-02 18:00:00", "2016-11-04 20:00:00", "2016-11-13 23:00:00", "2016-11-03 06:00:00", "2016-11-08 06:00:00", "2016-11-06 22:00:00", "2016-10-17", "2016-10-31 19:00:00", "2016-11-09 13:00:00", "2016-10-02 22:00:00", "2016-11-01 02:00:00", "2016-11-09 14:00:00", "2016-10-29 18:00:00", "2016-11-05", "2016-11-09 16:00:00", "2016-10-29 14:00:00", "2016-11-01 17:00:00", "2016-11-11 08:00:00", "2016-11-10 04:00:00", "2016-11-10 05:00:00", "2016-11-10 13:00:00", "2016-11-15 12:00:00", "2016-11-05 11:00:00", "2016-11-16 03:00:00", "2016-11-11", "2016-11-13 14:00:00", "2016-10-19 15:00:00", "2016-11-15 07:00:00", "2016-11-10 14:00:00", "2016-11-11 07:00:00", "2016-11-10 23:00:00", "2016-11-06 10:00:00", "2016-11-11 04:00:00", "2016-11-12 03:00:00", "2016-11-12 06:00:00", "2016-11-10 16:00:00", "2016-11-09 21:00:00", "2016-11-09 23:00:00", "2016-11-09 18:00:00", "2016-11-02 22:00:00", "2016-11-10 19:00:00", "2016-10-30 15:00:00", "2016-11-08 09:00:00", "2016-11-03 21:00:00", "2016-11-11 09:00:00", "2016-11-13 05:00:00", "2016-11-10 03:00:00", "2016-11-14 19:00:00", "2016-11-09 20:00:00", "2016-11-10 08:00:00", "2016-12-18", "2016-11-10 10:00:00", "2016-12-08 16:00:00", "2016-11-10 01:00:00", "2016-11-15 20:00:00", "2016-11-10 12:00:00", "2016-11-15 08:00:00", "2016-10-21 06:00:00", "2016-11-10", "2016-11-07 06:00:00", "2016-11-13 15:00:00", "2016-10-08", "2016-11-11 17:00:00", "2016-11-12 07:00:00", "2016-10-31 23:00:00", "2016-10-16 03:00:00", "2016-11-11 20:00:00", "2016-11-11 21:00:00", "2016-10-22 17:00:00", "2016-11-12", "2016-11-10 11:00:00", "2016-11-11 10:00:00", "2016-11-11 18:00:00", "2016-11-15 02:00:00", "2016-11-15 13:00:00", "2016-11-11 23:00:00", "2016-10-08 23:00:00", "2016-10-30 10:00:00", "2016-10-17 17:00:00", "2016-11-15 15:00:00", "2016-11-10 07:00:00", "2016-11-03 23:00:00", "2016-11-14 21:00:00", "2016-11-15 06:00:00", "2016-11-14 01:00:00", "2016-11-14 23:00:00", "2016-11-12 22:00:00", "2016-11-04 11:00:00", "2016-12-24 22:00:00", "2016-11-15", "2016-11-10 21:00:00", "2016-11-15 09:00:00", "2016-11-01 01:00:00", "2016-11-12 23:00:00", "2016-11-14 16:00:00", "2016-11-07 04:00:00", "2016-10-25 01:00:00", "2016-11-13 20:00:00", "2016-11-14 17:00:00", "2016-11-15 11:00:00", "2016-11-15 03:00:00", "2016-11-08 20:00:00", "2016-11-01 13:00:00", "2016-11-01 16:00:00", "2016-11-01 04:00:00", "2016-11-01 18:00:00", "2016-11-12 04:00:00", "2016-11-13 01:00:00", "2016-11-13 13:00:00", "2016-11-05 03:00:00", "2016-11-01 22:00:00", "2016-11-11 05:00:00", "2016-11-01 19:00:00", "2016-11-06 18:00:00", "2016-10-22 23:00:00", "2016-10-31 03:00:00", "2016-10-28 03:00:00", "2016-11-01 14:00:00", "2016-11-12 12:00:00", "2016-10-31 01:00:00", "2016-10-25 17:00:00", "2016-11-09 01:00:00", "2016-10-31 21:00:00", "2016-11-11 01:00:00", "2016-11-13 16:00:00", "2016-10-31 22:00:00", "2016-10-27 16:00:00", "2016-11-01 11:00:00", "2016-10-13 18:00:00", "2016-11-08 12:00:00", "2016-11-01 15:00:00", "2016-11-08 16:00:00", "2016-11-07 12:00:00", "2016-11-15 16:00:00", "2016-10-31 20:00:00", "2016-10-31 12:00:00", "2016-11-01 12:00:00", "2016-11-14 11:00:00", "2016-10-29 19:00:00", "2016-10-30 01:00:00", "2016-11-07 15:00:00", "2016-10-27 20:00:00", "2016-11-09 22:00:00", "2016-10-28 14:00:00", "2016-11-05 21:00:00", "2016-11-12 21:00:00", "2016-11-11 16:00:00", "2016-11-15 19:00:00", "2016-11-25 08:00:00", "2016-11-11 13:00:00", "2016-11-13 02:00:00", "2016-11-02", "2016-11-02 14:00:00", "2016-11-04 02:00:00", "2016-11-12 16:00:00", "2016-11-01", "2016-11-12 15:00:00", "2016-11-12 20:00:00", "2016-10-31 02:00:00", "2016-11-14 10:00:00", "2016-11-10 02:00:00", "2016-11-12 17:00:00", "2016-11-06 02:00:00", "2016-11-06 17:00:00", "2016-11-12 11:00:00", "2016-11-12 09:00:00", "2016-10-29 08:00:00", "2016-10-21 16:00:00", "2016-11-12 02:00:00", "2016-11-05 06:00:00", "2016-11-13 21:00:00", "2016-11-09 12:00:00", "2016-11-13 17:00:00", "2016-11-13 03:00:00", "2016-11-13 18:00:00", "2016-11-13 06:00:00", "2016-11-01 05:00:00", "2016-11-13 10:00:00", "2016-11-13 07:00:00", "2016-10-07 21:00:00", "2016-11-14 14:00:00", "2016-11-14 05:00:00", "2016-11-14 06:00:00", "2016-11-14 12:00:00", "2016-11-10 09:00:00", "2016-11-11 15:00:00", "2016-11-15 22:00:00", "2016-11-14", "2016-11-06 04:00:00", "2016-11-07 23:00:00", "2016-11-14 13:00:00"], "type": "bar"}], {"title": "Evolution of the number of tweets per hour", "xaxis": {"title": "Date"}, "yaxis": {"title": "Count"}}, {"linkText": "Export to plot.ly", "showLink": true})</script>
+
                     </h3>
                 </div>
                 <hr>
@@ -125,19 +151,19 @@
                         some kind of function):  </p>
 
                         <a href="#">
-                           <img class="indegree" src="img/indegree.jpg" alt="" align="middle">
+                           <p align="center"><img class="indegree" src="img/indegree.jpg" alt=""></p>
                         </a>        
                         <span class="caption text-muted">Figure 1 - In degree distribution.</span>
 
                         <a href="#">
-                           <img class="outdegree" src="img/outdegree.jpg" alt="" align="middle">
+                           <p align="center"><img class="outdegree" src="img/outdegree.JPG" alt="" align="middle"></p>
                         </a>        
                         <span class="caption text-muted">Figure 2 - Out degree distribution.</span>
 
                         <p>In Figure 1 we can see that the most common in degree is 2, with more than 50k occurences, but after 6 in degree it seems we have no more nodes. However the out degree distribution is way broader. very few users have the same out degree but it goes from 0 to roughly 5000.</p>
 
                          <a href="#">
-                           <img class="logplot" src="img/logplot.jpg" alt="" align="middle">
+                           <p align="center"><img class="logplot" src="img/logplot.jpg" alt="" align="middle"></p>
                         </a>        
                         <span class="caption text-muted">Figure 3 - Plot of distributions on a log-scale.</span>
 
@@ -147,7 +173,7 @@
                         <P>The graph is way too big to be drawn, so we decide to make a smaller graph. The idea is to keep the node with a degree greater than 3 only. We have a lot of isolated accounts that are quite useless in this centrality analysis. The new graph had now 2785 nodes and and  12228 edges.</P>              
 
                         <a href="#">
-                           <img class="network" src="img/graphfin.jpg" align="middle" style="width: 50%; height: 50%">
+                           <p align="center"><img class="network" src="img/graphfin.jpg" align="middle" style="width: 50%; height: 50%"></p>
                         </a>        
                         <span class="caption text-muted">Reduced graph of users and followers</span>
 
@@ -196,17 +222,17 @@
                         <p> We got a louvain modularity of 0.4, we can say this modularity is pretty high, which means we have good partitions in our network.</p>
                         
                         <a href="#">
-                           <img class="Communities" src="img/graphparti.jpg" alt="" align="middle" style="width: 50%; height: 50%">
+                           <p align="center"><img class="Communities" src="img/graphpartition.JPG" alt="" style="width: 50%; height: 50%"></p>
                         </a>        
                         <span class="caption text-muted">Communities in the network</span>
-
+                        <p>We have 7 communities and we can see once more that one group is completely disconnected from the others. That is probably due to the first graph reduction (from 64k nodes to 2k nodes). This accounts had a lot of followers but they weren't popular so they've been removed. Now we have this isolated community while the others are connected.</p>
                         <a href="#">
-                           <img class="smallpart" src="img/smallpart.jpg" alt="" align="middle" style="width: 50%; height: 50%">
+                           <p align="center"><img class="smallpart" src="img/smallpart.jpg" alt="" align="middle" style="width: 50%; height: 50%"></p>
                         </a>        
                         <span class="caption text-muted">Reduced communities in the network</span>
-                        <p>We have 7 communities and we can see once more that one group is completely disconnected from the others. That is probably due to the first graph reduction (from 64k nodes to 2k nodes). This accounts had a lot of followers but they weren't popular so they've been removed. Now we have this isolated community while the others are connected. Let's dig into these communities.
-                        Alright, we have a lot of informations to processe here, so we'll work community by community. Next to account's name we provide the Twitter descriptions and/or a general description.</p>
-                        <h5>Community 0</h5>
+                        <p>Let's dig into these communities.</p>
+                        <p>Alright, we have a lot of informations to processe here, so we'll work community by community. Next to account's name we provide the Twitter descriptions and/or a general description.</p>
+                        <h4>Community 0</h4>
                         <p>According to the in degree</p>
                         <ul>
                             <li><b>NASA :</b> National Aeronautics and Space Administration</li>
@@ -231,7 +257,7 @@
                         <h5> Conclusion :</h5>
                         <p>Looking at the results we have and the twitter account's descriptions we can spot two main ideas : independant and left. This community is made of people who claim to be independant, unbiased, left winged and against politicians such as Donald J. Trump. It also seems that these users (the real person behind) are quite educated (PhD, Exec Dir, BUsiness, Bill Gates, Wikileaks...)</p>
 
-                        <h5>Community 1</h5>
+                        <h4>Community 1</h4>
                         <p>The top ten accounts by in degree are :</p></p>
                         <ul>
                             <li><b>JudgeJeanine :</b> Judge Pirro is a highly respected District Attorney, Judge, author &amp; renowned champion of the underdog. She hosts the Fox News show, Justice with Judge Jeanine.</li>
@@ -253,7 +279,7 @@
                         </ul>
                         <h5>Conclusion :</h5>
                         <p>This community is cleary made of Trump supporters and on a larger scale, republicans. We can see a lot of FOX News TV host, a TV channel which strongly supported Trump during the campain (and still does). We also have different personnality from Trump familly, board, government... When looking at the top accounts by out degree we come accross strongly patriotic users (a lot of Star Spangled Banners and bald eagles on the pages) and Trump supporters. Two things to notice however :</p> Trump isn't in the top account, which is a odd, and we have at least one "troll" account (Trevor90666770) and we may have some more that would probably biase the sentiment</p>
-                        <h5>Community 2</h5>
+                        <h4>Community 2</h4>
                         <p>The accounts by in degree</p>
                         <ul>
                             <li><b>KeithOlbermann :</b> GQ Special Correspondent: THE RESISTANCE. On Bojack Horseman. Denounced by Trump. Saying nice things about Canada since</li>
@@ -276,7 +302,7 @@
                         </ul>
                         <h5>Conclusion :</h5>
                         <p>This community is now Democrat. We have a senator, Michelle Obama and Chelsea Clinton but democrat journalists such as CNN/Bloomberg reporters. Once again we have to notice that Hillary and Obama aren't in the top accounts (also uncanny)</p>
-                        <h5>Community 3</h5>
+                        <h4>Community 3</h4>
                         <ul>
                             <li><b>DavidLimbaugh :</b> A lawyer, columnist, and</li>
                             <li><b>gatewaypundit :</b> Blogger- Activist- - Where Hope Made a Comeback</li>
@@ -297,7 +323,7 @@
                         </ul>
                         <h5>Conclusion :</h5>
                         <p>It is really difficult to label this community. We have a lot of different users indeed. From TV host, to average users and even the star wars account... It seems this community is a big melting pot and it will be hard to get any trustworthy result, so we won't spend too much time on this one.</p>
-                        <h5>Community 4</h5>
+                        <h4>Community 4</h4>
                         <p>The accounts by in degree are :</p></p>
                         <ul>
                             <li><b>edsheeran :</b> British singer</li>
@@ -320,7 +346,7 @@
                         </ul>
                         <h5>Conclusion:</h5>
                         <p>And here comes the show business community. We have indeed a lot of singer/podcaster and of course their little fandom. We can see this community as the trendy artists followed by young people. These artist claimed to follow HIllary Clinton during the campaign.</p>
-                        <h5>Community 5</h5>
+                        <h4>Community 5</h4>
                         <ul>
                             <li><b>HarvardBiz :</b> The leading destination for smart management thinking.</li>
                             <li><b>WSJ :</b> Breaking news and features from the Wall Street Journal.</li>
@@ -332,7 +358,7 @@
                         </ul>
                         <h5>Conclusion :</h5>
                         <p>This community seems to be focused on business and financial news. We see huge business news papers such as Forbes or the Wall Street Journal. This community is said to be neutral.</p>
-                        <p>Community 6</p>
+                        <h4>Community 6<h4>
                         <ul>
                             <li><b>jlllisaurusrex :</b> No description</li>
                         </ul>
@@ -352,7 +378,7 @@
                 <hr>
                 <div class="post-preview">
                     <h2 class="post-title">
-                        Sentiment
+                        Sentiment Analysis
                     </h2>
                     <h3 class="post-subtitle">
                         How did people feel?
