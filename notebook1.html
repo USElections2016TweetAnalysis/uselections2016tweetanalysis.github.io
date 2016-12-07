@@ -1,0 +1,1327 @@
+<div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Text-Analysis">Text Analysis<a class="anchor-link" href="#Text-Analysis">&#182;</a></h1><p>Below is some basic initilization, which involves connecting to our remote MongoDB database.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[209]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Custome helper file</span>
+<span class="kn">import</span> <span class="nn">elections_helper</span> <span class="kn">as</span> <span class="nn">helper</span>
+<span class="kn">from</span> <span class="nn">elections_helper</span> <span class="kn">import</span> <span class="n">display_table</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">string</span><span class="o">,</span> <span class="nn">operator</span><span class="o">,</span> <span class="nn">pickle</span><span class="o">,</span> <span class="nn">nltk</span><span class="o">,</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="c1"># sklearn</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span><span class="p">,</span> <span class="n">TfidfTransformer</span><span class="p">,</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <span class="n">DictVectorizer</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Globally-Defined-Variables">Globally Defined Variables<a class="anchor-link" href="#Globally-Defined-Variables">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[313]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># retrieve common stop words form nltk</span>
+<span class="n">stopwords</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+
+<span class="n">query_stopwords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">u&#39;financial&#39;</span><span class="p">,</span> <span class="s1">u&#39;mexico&#39;</span><span class="p">,</span> <span class="s1">u&#39;narrates&#39;</span><span class="p">,</span> <span class="s1">u&#39;new&#39;</span><span class="p">,</span> <span class="s1">u&#39;final&#39;</span><span class="p">,</span> <span class="s1">u&#39;market&#39;</span><span class="p">,</span> <span class="s1">u&#39;trump &#39;</span><span class="p">,</span> \
+                   <span class="s1">u&#39;riot&#39;</span><span class="p">,</span> <span class="s1">u&#39;cabinet&#39;</span><span class="p">,</span> <span class="s1">u&#39;hillary&#39;</span><span class="p">,</span> <span class="s1">u&#39;president&#39;</span><span class="p">,</span> <span class="s1">u&#39;america&#39;</span><span class="p">,</span> <span class="s1">u&#39;day&#39;</span><span class="p">,</span> <span class="s1">u&#39;thoughts&#39;</span><span class="p">,</span> \
+                   <span class="s1">u&#39;stock&#39;</span><span class="p">,</span> <span class="s1">u&#39;clinton &#39;</span><span class="p">,</span> <span class="s1">u&#39;positions&#39;</span><span class="p">,</span> <span class="s1">u&#39;weed&#39;</span><span class="p">,</span> <span class="s1">u&#39;planet&#39;</span><span class="p">,</span> <span class="s1">u&#39;electionnight&#39;</span><span class="p">,</span> <span class="s1">u&#39;clinton&#39;</span><span class="p">,</span> \
+                   <span class="s1">u&#39;obama&#39;</span><span class="p">,</span> <span class="s1">u&#39;elections2016 &#39;</span><span class="p">,</span> <span class="s1">u&#39;elect&#39;</span><span class="p">,</span> <span class="s1">u&#39;trump&#39;</span><span class="p">,</span> <span class="s1">u&#39;canadian&#39;</span><span class="p">,</span> <span class="s1">u&#39;donald&#39;</span><span class="p">,</span> <span class="s1">u&#39;election&#39;</span><span class="p">,</span> \
+                   <span class="s1">u&#39;earth&#39;</span><span class="p">,</span> <span class="s1">u&#39;still&#39;</span><span class="p">]</span>
+
+<span class="c1"># Retrieved dicationary containing word mapped with its happiness index</span>
+<span class="n">words_happiness</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./data_files/sentiment.pickle&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">setup_mongo_client</span><span class="p">(</span><span class="n">properties_file</span><span class="o">=</span><span class="s1">&#39;./properties/db.properties&#39;</span><span class="p">)</span>
+
+<span class="n">tweet_collection</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">get_collections</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Understanding-our-Data">Understanding our Data<a class="anchor-link" href="#Understanding-our-Data">&#182;</a></h2><p>Initially, let's display some of the content in the tweets, practice making queries and looking and commonly used words.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">tweet_collection</span><span class="o">.</span><span class="n">find</span><span class="p">({},</span> <span class="n">projection</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">tweet_text</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s2">&quot;Tweet #</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">tweet_text</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Tweet #1: RT @Ethan_Booker: TRUMP: look at this Hillary mask. it&#39;s hideous! just like her sou--
+AIDE: *whispers in ear*
+TRUMP: this mask is beautiful…
+Tweet #2: TRUMP: look at this Hillary mask. it&#39;s hideous! just like her sou--
+AIDE: *whispers in ear*
+TRUMP: this mask is bea… https://t.co/IpquTCKM9F
+Tweet #3: RT @FoxNews: #DonaldTrump&#39;s daughter-in-law, Lara Trump, blasted #HillaryClinton in a new interview. https://t.co/apANzmnyQU #Election2016…
+Tweet #4: #DonaldTrump&#39;s daughter-in-law, Lara Trump, blasted #HillaryClinton in a new interview. https://t.co/apANzmnyQU… https://t.co/eMohElI9aR
+Tweet #5: WikiLeaks: DNC And CNN Colluded On Questions For Trump, Cruz https://t.co/VDETfDgyLi
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Things to note:</p>
+<ul>
+<li>Excess text for a retweeted message. ex. RT @MassDeception1:</li>
+<li>Links in tweets</li>
+<li>Mentions in tweets</li>
+</ul>
+<p>First off, we don't need to include retweeted message since they will have the same sentiment as the original. We can use regular expressions to filter out links in the format <a href="https://t.co/">https://t.co/</a>... and mentions as well.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[315]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">all_hashtags</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+
+<span class="k">def</span> <span class="nf">tweet_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">extra_stopwords</span><span class="o">=</span><span class="nb">set</span><span class="p">()):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># matches mentions and twitter links</span>
+    <span class="n">remove_pattern</span> <span class="o">=</span> <span class="s2">r&quot;(?:@[\w]*|https://t.co/[\w]*)&quot;</span> 
+   
+    <span class="c1"># matches text found after hashtag</span>
+    <span class="n">hashtag_pattern</span> <span class="o">=</span> <span class="s2">r&quot;#([^\s]*)&quot;</span>
+    
+    <span class="c1"># pattern to remove puncuation except punctuation x</span>
+    <span class="n">punc_pattern</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="s2">r&quot;[^\w\d&quot;</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="s2">&quot;\s]+&quot;</span>
+    
+    <span class="c1"># match words from hashtag</span>
+    <span class="n">hashtag_word_pattern</span> <span class="o">=</span> <span class="s1">r&#39;([A-Z][^A-Z]*|[a-z][a-z]*)&#39;</span>
+    
+    <span class="c1"># create a list of all hashtags (not including hash symbol)</span>
+    <span class="n">hashtags</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">hashtag_pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    
+    <span class="c1"># add hashtags to global set</span>
+    <span class="n">all_hashtags</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">hashtags</span><span class="p">)</span>
+    
+    <span class="c1"># remove punctuation from hashtags in case it exists</span>
+    <span class="n">hashtags</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">punc_pattern</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">hashtags</span><span class="p">]</span>
+    
+    <span class="c1"># split hashtag into words</span>
+    <span class="n">hashtag_tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">hashtag_word_pattern</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hashtags</span><span class="p">))</span>
+
+    <span class="c1"># remove mentions and links from tweet</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">remove_pattern</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    
+    <span class="c1"># replaces punctuation with a space, removes hashtags</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">punc_pattern</span><span class="p">(</span><span class="s2">&quot;&#39;#&quot;</span><span class="p">),</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    
+    <span class="c1"># create a combined string of tweet text and words from hashtag</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hashtag_tokens</span><span class="p">)</span>
+    
+    <span class="c1"># split text at whitespace</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    
+    <span class="c1"># remove if not in the alphabet and not in stopwords, set to lowercase</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span> \
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">extra_stopwords</span><span class="p">)</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">tweet_collection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s1">&#39;retweeted&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span> <span class="n">projection</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">tweet</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">tweet</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">tweet_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    
+    <span class="k">print</span> <span class="s2">&quot;Tweet #</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">text</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Tweet #1: [u&#39;ear&#39;, u&#39;trump&#39;, u&#39;bea&#39;, u&#39;mask&#39;, u&#39;like&#39;, u&#39;whispers&#39;, u&#39;hillary&#39;, u&#39;sou&#39;, u&#39;aide&#39;, u&#39;hideous&#39;, u&#39;look&#39;]
+TRUMP: look at this Hillary mask. it&#39;s hideous! just like her sou--
+AIDE: *whispers in ear*
+TRUMP: this mask is bea… https://t.co/IpquTCKM9F
+Tweet #2: [u&#39;daughter&#39;, u&#39;trump&#39;, u&#39;hillary&#39;, u&#39;donald&#39;, u&#39;lara&#39;, u&#39;clinton&#39;, u&#39;interview&#39;, u&#39;new&#39;, u&#39;law&#39;, u&#39;blasted&#39;]
+#DonaldTrump&#39;s daughter-in-law, Lara Trump, blasted #HillaryClinton in a new interview. https://t.co/apANzmnyQU… https://t.co/eMohElI9aR
+Tweet #3: [u&#39;dnc&#39;, u&#39;cruz&#39;, u&#39;questions&#39;, u&#39;cnn&#39;, u&#39;wikileaks&#39;, u&#39;colluded&#39;, u&#39;trump&#39;]
+WikiLeaks: DNC And CNN Colluded On Questions For Trump, Cruz https://t.co/VDETfDgyLi
+Tweet #4: [u&#39;never&#39;, u&#39;clinton&#39;, u&#39;believed&#39;, u&#39;emails&#39;, u&#39;person&#39;, u&#39;hillary&#39;, u&#39;johnpodesta&#39;, u&#39;wikileaks&#39;, u&#39;podesta&#39;]
+Hillary Clinton is not a person who can be believed #NeverHillary #wikileaks #johnpodesta #PodestaEmails… https://t.co/ity0m0nJLL
+Tweet #5: [u&#39;obama&#39;, u&#39;clinton&#39;, u&#39;annihilate&#39;, u&#39;would&#39;, u&#39;romney&#39;, u&#39;hillary&#39;, u&#39;clobber&#39;, u&#39;bloomberg&#39;, u&#39;poll&#39;, u&#39;trump&#39;]
+Bloomberg Poll:
+Obama would annihilate Trump 53-41. 
+Romney would clobber Hillary Clinton 50-40.
+https://t.co/7TD7WIO2vR
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[247]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">tweet_generator</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">get_string</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    
+    <span class="c1"># if query is a list we need to aggregate</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">tweet_collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">tweet_collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s2">&quot;Number of items retrieved is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">cur</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span>
+    
+    <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="n">cur</span><span class="p">:</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="n">document</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">get_string</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">get_string</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">_id</span><span class="p">)</span>
+        <span class="c1"># otherwise yield document</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">_id</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">merge_dicts</span><span class="p">(</span><span class="o">*</span><span class="n">dict_args</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Given any number of dicts, shallow copy and merge into a new dict,</span>
+<span class="sd">    precedence goes to key value pairs in latter dicts.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">dictionary</span> <span class="ow">in</span> <span class="n">dict_args</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">get_dict_representation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">feature_names</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Convert sparse matrix representation to dictionary.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">dict_vectorizer</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">()</span>
+
+    <span class="c1"># set feature names so dictionaries can be unpacked</span>
+    <span class="n">dict_vectorizer</span><span class="o">.</span><span class="n">feature_names_</span> <span class="o">=</span> <span class="n">feature_names</span>
+
+    <span class="c1"># merge dictionaries</span>
+    <span class="k">if</span> <span class="n">merge</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">merge_dicts</span><span class="p">(</span><span class="o">*</span><span class="n">dict_vectorizer</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="c1"># keep seperate</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dict_vectorizer</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># def display_table(data, title=None, limit=20, **kwargs):</span>
+<span class="c1">#     if title:            </span>
+<span class="c1">#         print title + &#39; (limited to %s results)&#39; % limit</span>
+<span class="c1">#     if type(data[0]) == tuple:</span>
+<span class="c1">#         data = [[str(tup[0]), str(tup[1])] for tup in data[:limit]]</span>
+<span class="c1">#     print tabulate(data[:limit], tablefmt=&quot;fancy_grid&quot;, **kwargs)</span>
+<span class="c1">#     print &#39;\n&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">sort_dict</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="n">reverse</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Calculate-Frequency-Distribution-and-TF-IDF">Calculate Frequency Distribution and TF-IDF<a class="anchor-link" href="#Calculate-Frequency-Distribution-and-TF-IDF">&#182;</a></h2><p>For TF-IDF, we will combine all the tweets from the same location and same query since the document size for each individual tweet is too small.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[311]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">get_bag_words</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">get_string</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">extra_stopwords</span><span class="o">=</span><span class="nb">set</span><span class="p">()):</span>
+    <span class="c1"># Create a count vectorizer to convert tweets to bag of word representation</span>
+    <span class="c1"># count_vectorizer = CountVectorizer(tokenizer=tokenizer)</span>
+    
+    <span class="c1"># gen = tweet_generator(query, get_string)</span>
+
+    <span class="c1"># Create a matrix passing in a generator containing tweets</span>
+    <span class="c1"># bag_of_words = count_vectorizer.fit_transform(gen)</span>
+    <span class="n">bag_words</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">_id</span> <span class="ow">in</span> <span class="n">tweet_generator</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">get_string</span><span class="p">):</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">tweet_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">extra_stopwords</span><span class="p">)</span>
+        <span class="n">bag_words</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span>
+        <span class="n">words</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+    <span class="c1"># Save the indices of</span>
+    <span class="c1"># feature_names = count_vectorizer.get_feature_names()</span>
+
+    <span class="c1"># Get a dictionary representation of the bag of words matrix</span>
+    <span class="c1"># This can be used to create a tweet id to token dictionary</span>
+    <span class="c1"># bag_of_words_dictionary = get_dict_representation(bag_of_words, feature_names)</span>
+    
+    <span class="c1"># return bag_of_words, bag_of_words_dictionary, feature_names</span>
+    <span class="k">return</span> <span class="n">bag_words</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[196]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">get_term_frequency</span><span class="p">(</span><span class="n">bag_words</span><span class="p">):</span>
+    
+    <span class="n">tf</span> <span class="o">=</span> <span class="p">{}</span>
+    
+<span class="c1">#     def word_count(inner):</span>
+<span class="c1">#         # For each word from the list of tokens</span>
+<span class="c1">#         for k in inner.keys():</span>
+<span class="c1">#             # if the key does not exist, set to 1 </span>
+<span class="c1">#             if freq_dist.get(k,0) == 0:</span>
+<span class="c1">#                 freq_dist[k] = 1</span>
+<span class="c1">#             # add one if the key exists</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 freq_dist[k] += 1</span>
+    
+<span class="c1">#     if type(bag_of_words) is list:</span>
+<span class="c1">#         for inner in bag_of_words:</span>
+<span class="c1">#             word_count(inner)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         word_count(X)</span>
+
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">bag_words</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="c1"># if the key does not exist, set to 1 </span>
+            <span class="k">if</span> <span class="n">tf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">tf</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1"># add one if the key exists</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tf</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+    <span class="k">return</span> <span class="n">tf</span><span class="p">,</span> <span class="n">sort_dict</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[252]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">get_tfidf</span><span class="p">(</span><span class="n">bag_words</span><span class="p">,</span> <span class="n">tf</span><span class="p">):</span>
+    
+    <span class="n">idf</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">tfidf</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">_id</span><span class="p">,</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">bag_words</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        
+        <span class="n">tfidf</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+            
+            <span class="n">tfidf</span><span class="p">[</span><span class="n">_id</span><span class="p">][</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+            
+            <span class="c1"># if the key does not exist, set to 1 </span>
+            <span class="k">if</span> <span class="n">idf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">idf</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1"># add one if the key exists</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">idf</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bag_words</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s2">&quot;Size of corpus (number of documents) </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">N</span>
+    
+    <span class="k">for</span> <span class="n">_id</span><span class="p">,</span> <span class="n">inner</span> <span class="ow">in</span> <span class="n">tfidf</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">inner</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">tfidf</span><span class="p">[</span><span class="n">_id</span><span class="p">][</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">N</span> <span class="o">/</span> <span class="n">idf</span><span class="p">[</span><span class="n">word</span><span class="p">],</span><span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tf</span><span class="p">[</span><span class="n">word</span><span class="p">],</span><span class="mi">10</span><span class="p">))</span>
+    
+    <span class="c1"># Create a transformer to convert to a tf-idf representation</span>
+    <span class="c1"># tfidf_transformer = TfidfTransformer(sublinear_tf=True)</span>
+
+    <span class="c1"># Calculate tf-idf using bag of words matrix</span>
+    <span class="c1"># tfidf = tfidf_transformer.fit_transform(bag_of_words)</span>
+
+    <span class="c1"># Create a dictionary representation of the sparse matrix</span>
+    <span class="c1"># tfidf_dictionary = get_dict_representation(tfidf, feature_names, merge=True)</span>
+    
+    <span class="c1">#if sort:</span>
+    <span class="c1">#    tfidf_sorted = sort_dict(tfidf_dictionary)</span>
+    
+    <span class="c1">#return tfidf, tfidf_dictionary, tfidf_sorted</span>
+    <span class="k">return</span> <span class="n">tfidf</span><span class="p">,</span> <span class="n">sort_dict</span><span class="p">(</span><span class="n">merge_dicts</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">tfidf</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()]))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="All-Tweets">All Tweets<a class="anchor-link" href="#All-Tweets">&#182;</a></h3><p>First, all the tweets will be used to calculate the frequency distribution and TF-IDF (not including retweets).</p>
+<ol>
+<li>Calculating the frequency distribution.</li>
+<li>Calculating the TF-DF.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[241]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;retweeted&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+<span class="n">get_string</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="c1"># Find a bag of words representation</span>
+<span class="n">bag_words</span><span class="p">,</span> <span class="n">unique_words</span> <span class="o">=</span> <span class="n">get_bag_words</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">get_string</span><span class="p">)</span>
+
+<span class="c1"># Find the frequency distribution</span>
+<span class="n">tf</span><span class="p">,</span> <span class="n">tf_sorted</span> <span class="o">=</span> <span class="n">get_term_frequency</span><span class="p">(</span><span class="n">bag_words</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s2">&quot;Total number of unique words is </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_words</span><span class="p">)</span>
+
+<span class="n">display_table</span><span class="p">(</span><span class="n">tf_sorted</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Most frequent words from Tweets&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Words&#39;</span><span class="p">,</span><span class="s1">&#39;Frequency&#39;</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Number of items retrieved is 71370
+Total number of unique words is 34080
+
+Most frequent words from Tweets (limited to 20 results)
+╒═══════════╤═════════════╕
+│ Words     │   Frequency │
+╞═══════════╪═════════════╡
+│ trump     │       43205 │
+├───────────┼─────────────┤
+│ election  │       13268 │
+├───────────┼─────────────┤
+│ day       │        9395 │
+├───────────┼─────────────┤
+│ president │        8160 │
+├───────────┼─────────────┤
+│ clinton   │        7374 │
+├───────────┼─────────────┤
+│ donald    │        7248 │
+├───────────┼─────────────┤
+│ hillary   │        5447 │
+├───────────┼─────────────┤
+│ america   │        5361 │
+├───────────┼─────────────┤
+│ night     │        4927 │
+├───────────┼─────────────┤
+│ vote      │        4526 │
+├───────────┼─────────────┤
+│ final     │        4473 │
+├───────────┼─────────────┤
+│ thoughts  │        4390 │
+├───────────┼─────────────┤
+│ people    │        3318 │
+├───────────┼─────────────┤
+│ amp       │        3212 │
+├───────────┼─────────────┤
+│ like      │        3150 │
+├───────────┼─────────────┤
+│ obama     │        2721 │
+├───────────┼─────────────┤
+│ win       │        2483 │
+├───────────┼─────────────┤
+│ voted     │        2369 │
+├───────────┼─────────────┤
+│ elect     │        2112 │
+├───────────┼─────────────┤
+│ world     │        2047 │
+╘═══════════╧═════════════╛
+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[243]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">tfidf</span><span class="p">,</span> <span class="n">tfidf_sorted</span> <span class="o">=</span> <span class="n">get_tfidf</span><span class="p">(</span><span class="n">bag_words</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
+<span class="n">display_table</span><span class="p">(</span><span class="n">tfidf_sorted</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Highest TF-IDF words from Tweets&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Words&#39;</span><span class="p">,</span><span class="s1">&#39;TF-IDF&#39;</span><span class="p">])</span>
+
+<span class="c1"># lets find out how frequent the top words are</span>
+<span class="c1"># tfidf_words, _ = zip(*tfidf_sorted)</span>
+<span class="c1"># data = [ [word, tf[word]] for word in tfidf_words]</span>
+
+<span class="n">tfidf_sorted</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="n">display_table</span><span class="p">(</span><span class="n">tfidf_sorted</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Lowest TF-IDF words from Tweets&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Words&#39;</span><span class="p">,</span><span class="s1">&#39;Frequency&#39;</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Size of corpus (number of documents) 71370
+Highest TF-IDF words from Tweets (limited to 15 results)
+╒════════════╤══════════╕
+│ Words      │   TF-IDF │
+╞════════════╪══════════╡
+│ choosing   │  8.71203 │
+├────────────┼──────────┤
+│ bye        │  8.66412 │
+├────────────┼──────────┤
+│ sex        │  8.61431 │
+├────────────┼──────────┤
+│ blaming    │  8.61246 │
+├────────────┼──────────┤
+│ wanting    │  8.61018 │
+├────────────┼──────────┤
+│ trash      │  8.59869 │
+├────────────┼──────────┤
+│ homophobic │  8.59679 │
+├────────────┼──────────┤
+│ cities     │  8.59654 │
+├────────────┼──────────┤
+│ fascist    │  8.59319 │
+├────────────┼──────────┤
+│ fire       │  8.59251 │
+├────────────┼──────────┤
+│ rich       │  8.5918  │
+├────────────┼──────────┤
+│ christmas  │  8.58864 │
+├────────────┼──────────┤
+│ mom        │  8.5878  │
+├────────────┼──────────┤
+│ terrorism  │  8.58723 │
+├────────────┼──────────┤
+│ eat        │  8.58571 │
+╘════════════╧══════════╛
+
+
+Lowest TF-IDF words from Tweets (limited to 15 results)
+╒═════════════╤═════════════╕
+│ Words       │   Frequency │
+╞═════════════╪═════════════╡
+│ trump       │     2.39885 │
+├─────────────┼─────────────┤
+│ election    │     4.18371 │
+├─────────────┼─────────────┤
+│ day         │     4.68472 │
+├─────────────┼─────────────┤
+│ furthermore │     4.85352 │
+├─────────────┼─────────────┤
+│ allein      │     4.85352 │
+├─────────────┼─────────────┤
+│ rotsry      │     4.85352 │
+├─────────────┼─────────────┤
+│ pods        │     4.85352 │
+├─────────────┼─────────────┤
+│ rotting     │     4.85352 │
+├─────────────┼─────────────┤
+│ teabaggers  │     4.85352 │
+├─────────────┼─────────────┤
+│ upwards     │     4.85352 │
+├─────────────┼─────────────┤
+│ badidea     │     4.85352 │
+├─────────────┼─────────────┤
+│ sandwhich   │     4.85352 │
+├─────────────┼─────────────┤
+│ moguls      │     4.85352 │
+├─────────────┼─────────────┤
+│ swgreen     │     4.85352 │
+├─────────────┼─────────────┤
+│ goodlooking │     4.85352 │
+╘═════════════╧═════════════╛
+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Places">Places<a class="anchor-link" href="#Places">&#182;</a></h3><p>Next, tweets that have a location of origin will be used and retweets will not be included.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[314]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;$match&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;retweeted&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s1">&#39;place&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$ne&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">}}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$place.country&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$push&#39;</span><span class="p">:</span> <span class="s1">&#39;$text&#39;</span><span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+        <span class="p">{</span>
+        <span class="s2">&quot;$project&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="s2">&quot;$_id.location&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;all_text&#39;</span><span class="p">:</span> <span class="s1">&#39;$text&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">get_string</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;all_text&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;all_text&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1000</span> <span class="k">else</span> <span class="bp">None</span>
+
+<span class="c1"># Find a bag of words representation</span>
+<span class="n">bag_words</span><span class="p">,</span> <span class="n">unique_words</span> <span class="o">=</span> <span class="n">get_bag_words</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">get_string</span><span class="p">,</span> <span class="n">query_stopwords</span><span class="p">)</span>
+
+<span class="c1"># Find the frequency distribution</span>
+<span class="n">tf</span><span class="p">,</span> <span class="n">tf_sorted</span> <span class="o">=</span> <span class="n">get_term_frequency</span><span class="p">(</span><span class="n">bag_words</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s2">&quot;Total number of unique words is </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_words</span><span class="p">)</span>
+
+<span class="n">display_table</span><span class="p">(</span><span class="n">tf_sorted</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Most frequent words from Tweets&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Words&#39;</span><span class="p">,</span><span class="s1">&#39;Frequency&#39;</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">UnboundLocalError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-314-5d9768cde4e4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     20</span> 
+<span class="ansi-green-intense-fg ansi-bold">     21</span> <span class="ansi-red-fg"># Find a bag of words representation</span>
+<span class="ansi-green-fg">---&gt; 22</span><span class="ansi-red-fg"> </span>bag_words<span class="ansi-blue-fg">,</span> unique_words <span class="ansi-blue-fg">=</span> get_bag_words<span class="ansi-blue-fg">(</span>query<span class="ansi-blue-fg">,</span> get_string<span class="ansi-blue-fg">,</span> query_stopwords<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     23</span> 
+<span class="ansi-green-intense-fg ansi-bold">     24</span> <span class="ansi-red-fg"># Find the frequency distribution</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-311-5b81371b8caa&gt;</span> in <span class="ansi-cyan-fg">get_bag_words</span><span class="ansi-blue-fg">(query, get_string, extra_stopwords)</span>
+<span class="ansi-green-intense-fg ansi-bold">     11</span> 
+<span class="ansi-green-intense-fg ansi-bold">     12</span>     <span class="ansi-green-fg">for</span> text<span class="ansi-blue-fg">,</span> _id <span class="ansi-green-fg">in</span> tweet_generator<span class="ansi-blue-fg">(</span>query<span class="ansi-blue-fg">,</span> get_string<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 13</span><span class="ansi-red-fg">         </span>tokens <span class="ansi-blue-fg">=</span> tweet_tokenizer<span class="ansi-blue-fg">(</span>text<span class="ansi-blue-fg">,</span> extra_stopwords<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>         bag_words<span class="ansi-blue-fg">[</span>_id<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> tokens
+<span class="ansi-green-intense-fg ansi-bold">     15</span>         words<span class="ansi-blue-fg">.</span>extend<span class="ansi-blue-fg">(</span>tokens<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-280-d66f95158ba3&gt;</span> in <span class="ansi-cyan-fg">tweet_tokenizer</span><span class="ansi-blue-fg">(text, extra_stopwords)</span>
+<span class="ansi-green-intense-fg ansi-bold">     42</span> 
+<span class="ansi-green-intense-fg ansi-bold">     43</span>     <span class="ansi-green-fg">if</span> extra_stopwords<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 44</span><span class="ansi-red-fg">         </span>stopwords <span class="ansi-blue-fg">=</span> stopwords<span class="ansi-blue-fg">.</span>union<span class="ansi-blue-fg">(</span>extra_stopwords<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     45</span> 
+<span class="ansi-green-intense-fg ansi-bold">     46</span>     <span class="ansi-red-fg"># remove if not in the alphabet and not in stopwords, set to lowercase</span>
+
+<span class="ansi-red-fg">UnboundLocalError</span>: local variable &#39;stopwords&#39; referenced before assignment</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[274]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">tfidf</span><span class="p">,</span> <span class="n">tfidf_sorted</span> <span class="o">=</span> <span class="n">get_tfidf</span><span class="p">(</span><span class="n">bag_words</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">place</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">tfidf</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">place</span>
+    <span class="k">print</span> <span class="n">sort_dict</span><span class="p">(</span><span class="n">values</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="k">print</span>
+<span class="c1"># display_table(tfidf_sorted, title=&quot;Highest TF-IDF words from Tweets&quot;, limit=15, headers=[&#39;Words&#39;,&#39;TF-IDF&#39;])</span>
+
+<span class="c1"># tfidf_sorted.reverse()</span>
+<span class="c1"># display_table(tfidf_sorted, title=&quot;Lowest TF-IDF words from Tweets&quot;, limit=15, headers=[&#39;Words&#39;,&#39;Frequency&#39;])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Size of corpus (number of documents) 12
+Canada
+0.625895921482 12
+
+United Kingdom
+0.625895921482 12
+
+Australia
+0.625895921482 12
+
+South Africa
+0.625895921482 12
+
+United Arab Emirates
+0.625895921482 12
+
+Mexico
+0.625895921482 12
+
+India
+0.625895921482 12
+
+France
+0.625895921482 12
+
+United States
+0.625895921482 12
+
+Sweden
+0.625895921482 12
+
+Germany
+0.625895921482 12
+
+Brazil
+0.625895921482 12
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[259]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;evasion&#39;</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[259]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>4</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Sentiment-Analysis">Sentiment Analysis<a class="anchor-link" href="#Sentiment-Analysis">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">get_sentiment</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+    
+    <span class="n">combined_happiness</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">words_with_no_sentiment</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">words_sentiment_count</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1"># Go through each token and if we have a sentiment for it, add it to the combined happiness score</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="c1"># get the happiness value, otherwise return zero</span>
+        <span class="n">happiest_value</span> <span class="o">=</span> <span class="n">words_happiness</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># if a happiness value exists keep track </span>
+        <span class="k">if</span> <span class="n">happiest_value</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">combined_happiness</span> <span class="o">+=</span> <span class="n">happiest_value</span>
+            <span class="n">words_sentiment_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># save the words that have no happiness index</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">words_with_no_sentiment</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    
+    <span class="c1"># Safe check to avoid division by 0</span>
+    <span class="k">if</span> <span class="n">combined_happiness</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="n">avg_sentiment_score</span> <span class="o">=</span> <span class="mi">0</span> 
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="n">avg_sentiment_score</span> <span class="o">=</span> <span class="n">combined_happiness</span> <span class="o">/</span> <span class="n">words_sentiment_count</span>
+    
+    <span class="k">return</span> <span class="n">avg_sentiment_score</span><span class="p">,</span> <span class="n">words_with_no_sentiment</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">tweet_sentiment</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">tweets_with_no_sentiment</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">all_words_with_no_sentiment</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweet_iterable</span><span class="p">(</span><span class="n">text_only</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">tweet</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="n">_id</span> <span class="o">=</span> <span class="n">tweet</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span>
+    
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">tweet_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    
+    <span class="n">avg_sentiment_score</span><span class="p">,</span> <span class="n">words_with_no_sentiment</span> <span class="o">=</span> <span class="n">get_sentiment</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+    
+    <span class="c1"># update set of words with no sentiment</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words_with_no_sentiment</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">all_words_with_no_sentiment</span> <span class="o">=</span> <span class="n">all_words_with_no_sentiment</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">words_with_no_sentiment</span><span class="p">)</span>
+    
+    <span class="c1"># If we didn&#39;t find any sentiment for the tweet, save the tweet id</span>
+    <span class="k">if</span> <span class="n">avg_sentiment_score</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">tweets_with_no_sentiment</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span>
+    <span class="c1"># otherwise save the sentiment to the dictionary</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tweet_sentiment</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_sentiment_score</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweet_sentiment</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">tweet_collection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s1">&#39;retweeted&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">})</span>
+<span class="k">print</span> <span class="n">cur</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweets_with_no_sentiment</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_words_with_no_sentiment</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>71265
+71370
+105
+26128
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">values</span> <span class="o">=</span> <span class="n">tweet_sentiment</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+<span class="n">average_sentiment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="n">std_sentiment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="n">happiest_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="n">saddest_value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+<span class="n">tweet_percent</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tweet_sentiment</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tweets_with_no_sentiment</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweet_sentiment</span><span class="p">)))</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">word_percent</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_words_with_no_sentiment</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_words</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="n">happiest_tweet_id</span> <span class="o">=</span> <span class="n">tweet_sentiment</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">values</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">happiest_value</span><span class="p">)]</span>
+<span class="n">saddest_tweet_id</span> <span class="o">=</span> <span class="n">tweet_sentiment</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">values</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">saddest_value</span><span class="p">)]</span>
+
+<span class="n">happy_tweet</span> <span class="o">=</span> <span class="n">tweet_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="n">happiest_tweet_id</span><span class="p">})[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="n">sad_tweet</span> <span class="o">=</span> <span class="n">tweet_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="n">saddest_tweet_id</span><span class="p">})[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+
+<span class="k">print</span> <span class="s2">&quot;The average sentiment of tweet sentiment is   </span><span class="si">%2.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">average_sentiment</span>
+<span class="k">print</span> <span class="s2">&quot;The stanard deviation of tweet sentiment is   </span><span class="si">%2.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">std_sentiment</span>
+<span class="k">print</span> <span class="s1">&#39;&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;Percentage of tweets that have a sentiment    </span><span class="si">%2.2f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tweet_percent</span>
+<span class="k">print</span> <span class="s2">&quot;Percentage of words that have a sentiment     </span><span class="si">%2.2f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">word_percent</span>
+<span class="k">print</span> <span class="s1">&#39;&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;The happiest tweet is                         </span><span class="si">%2.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">happiest_value</span>
+<span class="k">print</span> <span class="s2">&quot;Tweet text: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">happy_tweet</span>
+<span class="k">print</span> <span class="s1">&#39;&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;The saddest tweet is                          </span><span class="si">%2.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">saddest_value</span>
+<span class="k">print</span> <span class="s2">&quot;Tweet text: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sad_tweet</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The average sentiment of tweet sentiment is   5.57
+The stanard deviation of tweet sentiment is   0.47
+
+Percentage of tweets that have a sentiment    99.85%
+Percentage of words that have a sentiment     29.33%
+
+The happiest tweet is                         8.18
+Tweet text: @IcomOfficiel @UNESCO Excellent.
+BUT coinciding with https://t.co/2UoluNULzY
+
+The saddest tweet is                          1.56
+Tweet text: @xtremevicky &#34;Harambe died for this?&#34;
+#Elections2016 😂 https://t.co/ygtf0tnjl4
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">tweet_tokenizer</span><span class="p">(</span><span class="n">happy_tweet</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">words_happiness</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tweet ID&#39;</span><span class="p">,</span><span class="s1">&#39;Happiness Index&#39;</span><span class="p">]</span>
+
+<span class="n">display_table</span><span class="p">(</span><span class="n">sort_dict</span><span class="p">(</span><span class="n">tweet_sentiment</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Happiest Tweets&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="n">display_table</span><span class="p">(</span><span class="n">sort_dict</span><span class="p">(</span><span class="n">tweet_sentiment</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Unhappiest Tweets&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">sad_tweet</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[26]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>u&#39;@xtremevicky &#34;Harambe died for this?&#34;\n#Elections2016 \U0001f602 https://t.co/ygtf0tnjl4&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[281]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">cur</span> <span class="o">=</span> <span class="n">tweet_collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span> <span class="p">{</span> <span class="s1">&#39;$group&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;_id&#39;</span> <span class="p">:</span> <span class="s2">&quot;$root_query&quot;</span> <span class="p">}</span> <span class="p">}</span> <span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[282]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cur</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[283]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[283]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>13</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[298]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">st</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span>
+    <span class="c1"># matches text found after hashtag</span>
+    <span class="n">hashtag_pattern</span> <span class="o">=</span> <span class="s2">r&quot;#([^\s]*)&quot;</span>
+    
+    <span class="c1"># pattern to remove puncuation except punctuation x</span>
+    <span class="n">punc_pattern</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="s2">r&quot;[^\w\d&quot;</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="s2">&quot;\s]+&quot;</span>
+    
+    <span class="c1"># match words from hashtag</span>
+    <span class="n">hashtag_word_pattern</span> <span class="o">=</span> <span class="s1">r&#39;([A-Z][^A-Z]*|[a-z][a-z]*)&#39;</span>
+    
+    <span class="c1"># create a list of all hashtags (not including hash symbol)</span>
+    <span class="n">hashtags</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">hashtag_pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    
+    <span class="c1"># add hashtags to global set</span>
+    <span class="n">all_hashtags</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">hashtags</span><span class="p">)</span>
+    
+    <span class="c1"># remove punctuation from hashtags in case it exists</span>
+    <span class="n">hashtags</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">punc_pattern</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">hashtags</span><span class="p">]</span>
+    
+    <span class="c1"># split hashtag into words</span>
+    <span class="n">hashtag_tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">hashtag_word_pattern</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hashtags</span><span class="p">))</span>
+    
+    <span class="k">print</span> <span class="n">hashtag_tokens</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">hashtag_tokens</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;OR&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">st</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">hashtag_tokens</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">st</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[]
+[]
+[]
+[]
+[u&#39;Election&#39;, u&#39;Final&#39;, u&#39;Thoughts&#39;]
+[u&#39;New&#39;, u&#39;Trump&#39;, u&#39;Cabinet&#39;, u&#39;Positions&#39;]
+[u&#39;Im&#39;, u&#39;Still&#39;, u&#39;With&#39;, u&#39;Her&#39;]
+[u&#39;Not&#39;, u&#39;My&#39;, u&#39;President&#39;]
+[u&#39;President&#39;, u&#39;Elect&#39;, u&#39;Trump&#39;]
+[u&#39;Donald&#39;, u&#39;Trump &#39;, u&#39;Hillary&#39;, u&#39;Clinton &#39;, u&#39;Trump &#39;, u&#39;Clinton&#39;]
+[u&#39;Trump&#39;, u&#39;Narrates&#39;, u&#39;Planet&#39;, u&#39;Earth&#39;]
+[u&#39;Elections2016 &#39;, u&#39;Election&#39;, u&#39;Day&#39;]
+[u&#39;Trump&#39;, u&#39;Riot&#39;]
+set([u&#39;financial&#39;, u&#39;#TrumpRiot&#39;, u&#39;Her&#39;, u&#39;mexico&#39;, u&#39;Narrates&#39;, u&#39;#ImStillWithHer&#39;, u&#39;New&#39;, u&#39;#PresidentElectTrump&#39;, u&#39;Final&#39;, u&#39;market&#39;, u&#39;Trump &#39;, u&#39;Riot&#39;, u&#39;#ElectionDay&#39;, u&#39;#DonaldTrump&#39;, u&#39;Cabinet&#39;, u&#39;Hillary&#39;, u&#39;Not&#39;, u&#39;President&#39;, u&#39;America&#39;, u&#39;With&#39;, u&#39;Day&#39;, u&#39;Thoughts&#39;, u&#39;stock&#39;, u&#39;Clinton &#39;, u&#39;#TrumpNarratesPlanetEarth&#39;, u&#39;Positions&#39;, u&#39;weed&#39;, u&#39;Planet&#39;, u&#39;#Trump&#39;, u&#39;ElectionNight&#39;, u&#39;Clinton&#39;, u&#39;My&#39;, u&#39;#Clinton&#39;, u&#39;obama&#39;, u&#39;#NewTrumpCabinetPositions&#39;, u&#39;Elections2016 &#39;, u&#39;Elect&#39;, u&#39;Trump&#39;, u&#39;canadian&#39;, u&#39;#HillaryClinton&#39;, u&#39;#NotMyPresident&#39;, u&#39;Donald&#39;, u&#39;Im&#39;, u&#39;Election&#39;, u&#39;Earth&#39;, u&#39;Still&#39;, u&#39;#Elections2016&#39;, u&#39;#ElectionFinalThoughts&#39;])
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[307]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">output</span> <span class="k">if</span> <span class="s1">&#39;#&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">w</span> <span class="ow">and</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[u&#39;financial&#39;, u&#39;mexico&#39;, u&#39;narrates&#39;, u&#39;new&#39;, u&#39;final&#39;, u&#39;market&#39;, u&#39;trump &#39;, u&#39;riot&#39;, u&#39;cabinet&#39;, u&#39;hillary&#39;, u&#39;president&#39;, u&#39;america&#39;, u&#39;day&#39;, u&#39;thoughts&#39;, u&#39;stock&#39;, u&#39;clinton &#39;, u&#39;positions&#39;, u&#39;weed&#39;, u&#39;planet&#39;, u&#39;electionnight&#39;, u&#39;clinton&#39;, u&#39;obama&#39;, u&#39;elections2016 &#39;, u&#39;elect&#39;, u&#39;trump&#39;, u&#39;canadian&#39;, u&#39;donald&#39;, u&#39;election&#39;, u&#39;earth&#39;, u&#39;still&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
