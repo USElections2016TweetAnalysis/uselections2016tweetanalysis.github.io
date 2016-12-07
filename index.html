@@ -110,7 +110,209 @@
                         Twitter Network
                     </h2>
                     <h3 class="post-subtitle">
-                        Talk about the network and all our discoveries.
+                        <p>In this part we will talk about our network and all our discoveries.</p>
+                        <p>The goal of this directed network is to group every user we got from the scrapped tweets and their friends (e.g people they are following) and go through different step to show :</p>
+                        <ul>
+                          <li>What kind of connection they share</li>
+                          <li>If they follow the same people or not ? What does that mean ?</li>
+                          <li>Do they belong to the same community ?</li>
+                        </ul> 
+                        <h4> First results </h4>
+                        <p>With the help of the Twitter API we can build this graph by connecting our user with a direct link to the account they follow ! In the end we have a brand (big!) new graph that has  64728  node and  78788 edges. If we have a look at the biggest accounts in terms of follower (nodes' in degree) we run into famous names such as : wikileaks, BarackObama, realDonaldTrump or HillaryClinton. </p> 
+                        <p> But looking at the biggest accounts in term of friend (nodes' out degree) we have less known and average people</p>
+                        <p>Now that we have our graph we can have a look at the degree distributions (e.g try to indentify if the degree distributions follow
+                        some kind of function):  </p>
+                        <a href="#">
+                           <img class="indegreedi" src="img/post-sample-image.jpg" alt="">
+                        </a>        
+                        <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+
+                                            ICI degré in - tout expliquer puis comparer au degré out
+                        <p>In Figure 1 we can see that the most common in degree is 2, with more than 50k occurences, but after 6 in degree it seems we have no more nodes. However the out degree distribution is way broader. very few users have the same out degree but it goes from 0 to roughly 5000.</p>
+                        <p>The in degree distributions seem to approach a power-law as we can see the long tail (Figure 3) at the begining where the number of nodes with low degrees is really high and then it decreases as a power-law (with a few fluctuations that mean we have a few high influential individuals that have a lot of followers).</p>
+                        <p>We can see that the in-degrees and out-degrees do not follow the same curve. This means that we can't expect to have as many connections coming in than coming out. And this interpretation makes sense as our network was build from a social media platform : we tend to follow more people than we have followers. The red curve in Figure 5 confirms our thoughts about the in degree distribution, it follows a power law. On the other hand, the blue curve (and the out degree distributions in general) is pretty chaotic, we can't tell if it follows any particular distribution.</p>
+
+                        <P>The graph is way too big to be drawn, so we decide to make a smaller graph. The idea is to keep the node with a degree greater than 3 only. We have a lot of isolated accounts that are quite useless in this centrality analysis. The new graph had now 2785 nodes and and  12228 edges.</P>                       
+                                         ISERT NOETWORK (essayer de le rendre plus beau)
+                        <p>As we were exepecting, it seems like we have a few central accounts and thousands of smaller ones gravitating aroung them. To learn more about these central accounts we will now go through some centrality measures. We perform these algorithms on the reduced network as these measures are very costly.
+                        Betweeness centrality measures how central a node is. Users with a high betweenness centrality may have a good followers/following ratio. We will look into these accounts later on.</p>
+                        <p>Betweeness : The 5 most central accounts are :</p>
+                        <ul>
+                          <li>Trevor90666770</li>
+                          <li>sallykohn</li>
+                          <li>stuartpstevens</li>
+                          <li>StevenTDennis</li>
+                          <li>sanchezcan</li>
+                        </ul> 
+                        <p>Eigen centrality : The 5 most central accounts are :</p>
+                        <ul>
+                          <li>sallykohn</li>
+                          <li>sanchezcan</li>
+                          <li>StevenTDennis</li>
+                          <li>stuartpstevens</li>
+                          <li>kurteichenwald</li>
+                        </ul> 
+                        <p>In degree centrality : The 5 most central accounts are :</p>
+                        <ul>
+                          <li>wikileaks</li>
+                          <li>realDonaldTrump</li>
+                          <li>BarackObama</li>
+                          <li>POTUS</li>
+                          <li>HillaryClinton</li>
+                        </ul>       
+                        <p>These names are familiar but...</p>
+                        <p>out degree centrality : The 5 most central accounts are :</p>
+                        <ul>
+                          <li>sallykohn</li>
+                          <li>sanchezcan</li>
+                          <li>StevenTDennis</li>
+                          <li>stuartpstevens</li>
+                          <li>kurteichenwald</li>
+                        </ul> 
+                        <p>... these ones aren't. And once again, that makes sense, famous users will have more followers, but as an average person, you can follow as many people as you want !</p>
+                        <h5> Conclusion :</h5>
+                        <p>The results we have on centrality measures let us think that we have quite a good network. We have famous people with a lot of followers and Twitter addicts with a lot of "friends". It is also interesting to note that the betweeness centrality and the eigenvector centrality do not provide the exact same results. It will be interesting to see if we come across these names again when dealing with communities (and we'll see who these people actually are !).</p>
+                        
+                        <h4> Community </h4>
+                        <p>To perform community detection we'll use the Louvain algorithm. The inspiration for this method of community detection is the optimization of Modularity as the algorithm progresses. Modularity is one measure between -1 and 1 of the structure of networks. It was designed to measure the strength of division of a network into modules (also called groups, clusters or communities). 
+                        Networks with high modularity have dense connections between the nodes within modules but sparse connections between nodes in different modules. (Wikipédia)</p>
+                        <p> We got a louvain modularity of 0.4, we can say this modularity is pretty high, which means we have good partitions in our network.</p>
+                        
+                                    Plot les deux graphs de communautés
+                        <p>We have 7 communities and we can see once more that one group is completely disconnected from the others. That is probably due to the first graph reduction (from 64k nodes to 2k nodes). This accounts had a lot of followers but they weren't popular so they've been removed. Now we have this isolated community while the others are connected. Let's dig into these communities.
+                        Alright, we have a lot of informations to processe here, so we'll work community by community. Next to account's name we provide the Twitter descriptions and/or a general description.</p>
+                        <h5>Community 0</h5>
+                        <p>According to the in degree</p>
+                        <ul>
+                            <li>NASA : National Aeronautics and Space Administration</li>
+                            <li>wikileaks : Publishes and comments on leaked documents alleging government and corporate misconduct.</li>
+                            <li>BillGates : an American business magnate, investor, author and philanthropist.</li>
+                            <li>washingtonpost : Breaking news and analysis on politics, business, world national news, entertainment more.</li>
+                            <li>AP : The Associated Press is the essential global news network, delivering fast, unbiased news from every corner of the world to all media platforms and formats.</li>
+                            <li>BernieSanders : Bernie Sanders is the longest serving independent in congressional history. Ran for presidence</li>
+                            <li>BBCBreaking : Breaking news alerts and updates from the BBC</li>
+                        </ul>
+                        <p>And then by out degree are :</p>
+                        <ul>
+                            <li>PPolenberg : Peggy Polenberg Real Estate-Broker specializing in Hudson Valley Residential &amp; Commercial sales &amp; leases. (Anti Trump)
+                            wikileaks : ...</li>
+                            <li>GreenPartyUS : Official Twitter account of the Green Party of the United States (Independant)</li>
+                            <li>macdoodled : short time WAC/disABLED/ Wanted2start non profit Art Therapy for vets. ART HEALS. VA / social svcs fails lowest income disabled homeless -lost all -done.</li>
+                            <li>sulaimanslalani : Exec Dir GEO TV Network. Syndication, acquisition, films, advocacy campaigns. Squash freak.Globetrotter. Beatles/Sinatra/Dylan/Cash. Optimist forever!</li>
+                            <li>Independent : News, comment and features from The Independent</li>
+                            <li>JesseBenn : Just some guy who writes things. Raising a rebel. Married to #1 mom. Member of the Tribe. Dissident. Leftie. Fomenting rebellion. UW J-School PhD student.</li>
+                            <li>ajplus : AJ+ is news for the connected generation, sharing human struggles, and challenging the status quo.</li>
+                        </ul>
+                        <h5> Conclusion :</h5>
+                        <p>Looking at the results we have and the twitter account's descriptions we can spot two main ideas : independant and left. This community is made of people who claim to be independant, unbiased, left winged and against politicians such as Donald J. Trump. It also seems that these users (the real person behind) are quite educated (PhD, Exec Dir, BUsiness, Bill Gates, Wikileaks...)</p>
+
+                        <h5>Community 1</h5>
+                        <p>The top ten accounts by in degree are :</p>
+                        <ul>
+                            <li>JudgeJeanine : Judge Pirro is a highly respected District Attorney, Judge, author &amp; renowned champion of the underdog. She hosts the Fox News show, Justice with Judge Jeanine.</li>
+                            <li>seanhannity : TV Host Fox News Channel 10 PM. Nationally Syndicated Radio Host 3-6 PM EST</li>
+                            <li>mike_pence : Indiana Governor Mike Pence, Vice President-elect of the United States</li>
+                            <li>SheriffClarke : Sheriff Milwaukee Co. MA Security Studies NPS. NRA Member. CPAC Charlton Heston Courage Under Fire Award. NYPD/NYC Police Benevolent Asso. Person of the Year</li>
+                            <li>RealBenCarson : The Official Twitter Page of Dr. Ben Carson.</li>
+                            <li>LouDobbs : Lou Dobbs Tonight, Fox Business Network, 7 &amp; 11 pm</li>
+                            <li>DonaldJTrumpJr : EVP of Development &amp; Acquisitions Trump Organization and Boardroom Advisor on the Apprentice.</li>
+                        </ul>
+                        <p>The top ten accounts by out degree</p>
+                        <ul>
+                            <li>Trevor90666770 : Trump supporter who is NOT racist &amp; wants to MAGA! George Soros &amp; Hillary for Prison. Straight white cis male scum (definitely a "troll"</li>
+                            <li>halsteadg048 : Americans.. We Have A New Champion Of We The People Who Will Listen To Our Needs. God Bless</li>
+                            <li>jojoh888 : America will be great again with #PresidentTrump #DrainTheSwamp #</li>
+                            <li>shabeau2 : I did not begin this journey on the Trump Train. I researched, listened, watched, read and then made an educated decision to climb aboard. Bless DJT-</li>
+                            <li>Sunshine420too : Joined to be aboard the Trump</li>
+                            <li>FoxNews : America&rsquo;s Strongest Primetime Lineup Anywhere! Follow America's #1 cable news network, delivering you breaking news, insightful analysis, and must-see</li>
+                        </ul>
+                        <h5>Conclusion :</5>
+                        <p>This community is cleary made of Trump supporters and on a larger scale, republicans. We can see a lot of FOX News TV host, a TV channel which strongly supported Trump during the campain (and still does). We also have different personnality from Trump familly, board, government... When looking at the top accounts by out degree we come accross strongly patriotic users (a lot of Star Spangled Banners and bald eagles on the pages) and Trump supporters. Two things to notice however : Trump isn't in the top account, which is a odd, and we have at least one "troll" account (Trevor90666770) and we may have some more that would probably biase the sentiment</p>
+                        <h5>Community 2</h5>
+                        <p>The accounts by in degree</p>
+                        <ul>
+                            <li>KeithOlbermann : GQ Special Correspondent: THE RESISTANCE. On Bojack Horseman. Denounced by Trump. Saying nice things about Canada since</li>
+                            <li>SenWarren : Official twitter account of democrat Senator Elizabeth Warren of</li>
+                            <li>JoyAnnReid : Joy Reid, is a national correspondent at MSNBC, American cable television host and political</li>
+                            <li>elizabethforma : United States Senator from Massachusetts.</li>
+                            <li>politico : Nobody knows politics like</li>
+                            <li>FLOTUS : This account is run by the Office of First Lady Michelle</li>
+                            <li>ChelseaClinton : Mom, Wife, Author #ItsYourWorld, Vice-Chair/Champion of all things @ClintonFdn, @ClintonHealth, New</li>
+                        </ul>
+                        <p>The accounts by out degree are :</p>
+                        <ul>
+                            <li>sallykohn : Writer and CNN political commentator. Sometimes lovable</li>
+                            <li>stuartpstevens : Writer, political consultant, obsessive but lousy endurance sport junkie. Partner, @Strat_Media,Daily Beast columnist. Author of 7 books.</li>
+                            <li>StevenTDennis : @Bloomberg reporter. Senate, politics. Ex-White House, House, Md Politics. Dad to 3, Terp, Truth-teller. Opinions are my own.</li>
+                            <li>sanchezcan : Fit for knowledge, enjoy quality f&uacute;tbol where ever it exists, strengthen my spiritual beliefs &amp; enjoy talented people in the arts - University of Colorado</li>
+                            <li>kurteichenwald : Contributing editor, Vanity Fair; senior writer, Newsweek; New York Times bestselling author.</li>
+                            <li>JStein_Vox : Writing politics @ http://www.Vox.com . Formerly Ithaca Voice: http://bit.ly/2awfr0K . Mats Zuccarello fan.</li>
+                            <li>bad_bad_bernie : Saying true things that many are too nice to say. Mostly respectful, but always direct. #NoDAPL #NeverTrump</li>
+                        </ul>
+                        <h5>Conclusion :</h5>
+                        <p>This community is now Democrat. We have a senator, Michelle Obama and Chelsea Clinton but democrat journalists such as CNN/Bloomberg reporters. Once again we have to notice that Hillary and Obama aren't in the top accounts (also uncanny)</p>
+                        <h5>Community 3</h5>
+                        <ul>
+                            <li>DavidLimbaugh : A lawyer, columnist, and</li>
+                            <li>gatewaypundit : Blogger- Activist- - Where Hope Made a Comeback</li>
+                            <li>BuckSexton : Host, The Buck Sexton Show on theBlaze; Ex-CIA. Ex-NYPD Intel.</li>
+                            <li>MichaelBarone : Michael Barone is Senior Political Analyst for the Washington Examiner, co-author of The Almanac of American Politics and a contributor to Fox News.</li>
+                            <li>NolteNC : Editor-At-Large at Daily Wire</li>
+                            <li>kausmickey : The End of Equality [1992, Basic Books] The venerable liberal crusade for income equality is doomed. ... Time [to] try a different strategy.</li>
+                        </ul>
+                        <p>The top ten accounts by out degree</p>
+                        <ul>
+                            <li>AnnCoulter : Ann Hart Coulter is an American conservative social and political commentator, writer, syndicated columnist, and</li>
+                            <li>CharlemagSteak : Texan. Romantic Adventurer.</li>
+                            <li>JamesEdwardsTPC : Host of The Political Cesspool. As seen on: CNN, Fox News, MSNBC, C-SPAN, New York Times, Washington Post, Newsweek, U.K. Daily Mail, and a few hundred others.</li>
+                            <li>starwars : The official home of Star Wars on Twitter</li>
+                            <li>DennisPrager : Host of the Dennis Prager Show. Founder of @PragerU. Best-selling author. Columnist. Fan of cigars, stereo, the @LAKings and, of course, this wonderful country.</li>
+                            <li>zerohedge : No description</li>
+                            <li>RMConservative : Senior Editor at https://www.conservativereview.com/ Conservative writer, policy analyst,</li>
+                        </ul>
+                        <h5>Conclusion :</h5>
+                        <p>It is really difficult to label this community. We have a lot of different users indeed. From TV host, to average users and even the star wars account... It seems this community is a big melting pot and it will be hard to get any trustworthy result, so we won't spend too much time on this one.</p>
+                        <h5>Community 4</h5>
+                        <p>The accounts by in degree are :</p>
+                        <ul>
+                            <li>edsheeran : British singer</li>
+                            <li>rihanna : American singer</li>
+                            <li>ArianaGrande : American singer</li>
+                            <li>adamlambert : American singer</li>
+                            <li>NiallOfficial : American singer</li>
+                            <li>onedirection : Boys band</li>
+                            <li>Harry_Styles: He is known as a member of the boys band One Direction.</li>
+                        </ul>
+                        <p>The accounts by out degree</p>
+                        <ul>
+                            <li>troyesivan : Australia-based singer and actor</li>
+                            <li>tyleroakley : American YouTube and podcast personality, humorist, author and activist.</li>
+                            <li>RandallJSharp : Womanist | Pro-Black | SJW | My purpose in life is to help black people progress ECONOMICALLY, EDUCATIONALLY, POLITICALLY, SOCIALLY, &amp; PSYCHOLOGICALLY #BLM</li>
+                            <li>pshimmallama : Bosnian 🇧🇦I watch way to many tv shows and I tweet about them. I 💕my 🐱.</li>
+                            <li>AshtonsFalcon : Spelling isn't my thing nor writing a bio | multi-fandom | Noticed by my sunshines; BIEBER, CLIFFORD, OAKLEY !</li>
+                            <li>ladygaga : American</li>
+                            <li>hollet1227 : No description. Pro</li>
+                        </ul>
+                        <h5>Conclusion:</h5>
+                        <p>And here comes the show business community. We have indeed a lot of singer/podcaster and of course their little fandom. We can see this community as the trendy artists followed by young people. These artist claimed to follow HIllary Clinton during the campaign.</p>
+                        <h5>Community 5</h5>
+                        <ul>
+                            <li>HarvardBiz : The leading destination for smart management thinking.</li>
+                            <li>WSJ : Breaking news and features from the Wall Street Journal.</li>
+                            <li>SECNetwork : SEC Network is an American television channel that is owned by ESPN Inc. The channel is dedicated to coverage of collegiate sports sanctioned by the Southeastern Conference (SEC) including live and recorded event telecasts, news, analysis programs, and other content focusing on the conference's member schools</li>
+                            <li>Forbes : Business news and financial news by Forbes.com. Core topics include business, technology, stock markets, personal finance, and lifestyle.</li>
+                            <li>SEC : ..</li>
+                            <li>WSJbusiness : ..</li>
+                            <li>duckiller01 : No description, random account</li>
+                        </ul>
+                        <h5>Conclusion :</h5>
+                        <p>This community seems to be focused on business and financial news. We see huge business news papers such as Forbes or the Wall Street Journal. This community is said to be neutral.</p>
+                        <p>Community 6</p>
+                        <ul>
+                            <li>jlllisaurusrex : No description</li>
+                        </ul>
+                        <h5>Conclusion :</h5>
+                        <p>This user is unclassifiable. After going through her feed, nothing stands out but random retweet. There's no real need to consider this community.</p>
                     </h3>
                 </div>
                 <hr>
